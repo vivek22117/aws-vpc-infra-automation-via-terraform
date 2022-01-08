@@ -17,4 +17,4 @@ team                  = "LearningTeam"
 owner                 = "Vivek"
 bastion_instance_type = "t3a.small"
 isMonitoring          = true
-project               = "Learning-TF"
+project               = "VPC-Network-Automation"
