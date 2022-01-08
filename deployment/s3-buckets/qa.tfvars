@@ -5,7 +5,7 @@ owner        = "Vivek"
 environment  = "qa"
 isMonitoring = true
 project      = "Learning-TF"
-component    = "DataStorage"
+component    = "S3BucketManagement"
 
 bucket_config = {
 
