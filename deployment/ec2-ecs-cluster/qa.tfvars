@@ -11,7 +11,7 @@ log_retention_days = 3
 ami_filter_type = "self"
 
 instance_type                     = "t3a.small"
-max_price                         = "0.0085"
+max_price                         = "0.0075"
 volume_size                       = "40"
 default_target_group_port         = 80
 app_asg_max_size                  = "4"
