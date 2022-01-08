@@ -13,6 +13,12 @@ output "ecs-cluster-lb-arn" {
   description = "ECS cluster load balancer ARN!"
 }
 
+output "ecs-cluster-lb-domain" {
+  value       = aws_alb.ecs_cluster_alb.dns_name
+  description = "ECS cluster load balancer DNS name!"
+}
+
+
 output "ecs-cluster-id" {
   value       = aws_ecs_cluster.test_ecs_cluster.id
   description = "AWS TEST ECS Cluster id!"
@@ -28,4 +34,8 @@ output "alb-listner-arn" {
 
 output "ecs_optimized_ami" {
   value = data.aws_ssm_parameter.ecs_ami.value
+}
+
+output "config_server_fqdn" {
+  value = aws_route53_record.ecs_cluster_record.fqdn
 }

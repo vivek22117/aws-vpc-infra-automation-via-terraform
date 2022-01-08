@@ -13,6 +13,11 @@ output "ecs-cluster-lb-arn" {
   description = "ECS cluster load balancer ARN!"
 }
 
+output "ecs-cluster-lb-domain" {
+  value       = module.vpc-es-cluster.ecs-cluster-lb-domain
+  description = "ECS cluster load balancer DNS name!"
+}
+
 output "ecs-cluster-id" {
   value       = module.vpc-es-cluster.ecs-cluster-id
   description = "AWS DD ECS Cluster id!"
@@ -22,6 +27,10 @@ output "alb-target-group-arn" {
   value = module.vpc-es-cluster.alb-target-group-arn
 }
 
-output "alb-listner-arn" {
+output "alb-listener-arn" {
   value = module.vpc-es-cluster.alb-listner-arn
+}
+
+output "config_server_fqdn" {
+  value = module.vpc-es-cluster.config_server_fqdn
 }

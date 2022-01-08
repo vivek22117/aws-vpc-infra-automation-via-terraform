@@ -99,6 +99,11 @@ variable "ami_filter_type" {
   description = "AMI filter type, valid values 'self', 'amazon'"
 }
 
+variable "ecs_dns_name" {
+  type = string
+  description = "dns name for config server elb"
+}
+
 ######################################################
 # Local variables defined                            #
 ######################################################
