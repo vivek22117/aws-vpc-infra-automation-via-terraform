@@ -14,7 +14,6 @@ on:
       env:
         required: true
         description: 'qa or test or prod'
-        default: 'test'
 
 env:
   tf_version: '0.13.5'
