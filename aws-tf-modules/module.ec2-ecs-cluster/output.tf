@@ -37,5 +37,5 @@ output "ecs_optimized_ami" {
 }
 
 output "config_server_fqdn" {
-  value = aws_route53_record.ecs_cluster_record.fqdn
+  value = aws_route53_record.ecs_cluster_record[0].fqdn
 }
