@@ -6,6 +6,8 @@ isMonitoring = true
 project      = "Learning-TF"
 component_name = "EC2-ECS-Cluster"
 
+ecs_dns_name = "config-server.cloud-interview.in"
+
 log_retention_days = 3
 
 ami_filter_type = "self"

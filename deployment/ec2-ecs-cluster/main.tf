@@ -27,6 +27,8 @@ module "vpc-es-cluster" {
 
   custom_tags = var.custom_tags
 
+  ecs_dns_name = var.ecs_dns_name
+
   component_name = var.component_name
 
   isMonitoring = var.isMonitoring
