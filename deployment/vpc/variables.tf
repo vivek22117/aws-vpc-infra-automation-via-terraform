@@ -41,6 +41,11 @@ variable "db_azs_with_cidr" {
   description = "Name of azs with cidr to be used for Database infrastructure"
 }
 
+variable "vault_consul_azs_with_cidr" {
+  type        = list(string)
+  description = "Name of azs with cidr to be used for Vault & Consul infra"
+}
+
 variable "enable_nat_gateway" {
   type        = string
   description = "want to create nat-gateway or not"

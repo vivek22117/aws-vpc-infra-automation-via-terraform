@@ -11,6 +11,7 @@ ami_filter_type = "self"
 private_azs_with_cidr = ["10.0.16.0/24","10.0.18.0/24","10.0.20.0/24"]
 public_azs_with_cidr = ["10.0.17.0/24","10.0.19.0/24","10.0.21.0/24"]
 db_azs_with_cidr = ["10.0.22.0/24","10.0.24.0/24","10.0.26.0/24"]
+vault_consul_azs_with_cidr = ["10.0.23.0/24","10.0.25.0/24","10.0.27.0/24"]
 
 
 team                  = "LearningTeam"
