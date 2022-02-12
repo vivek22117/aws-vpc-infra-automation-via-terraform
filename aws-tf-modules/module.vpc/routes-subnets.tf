@@ -142,3 +142,18 @@ resource "aws_subnet" "db_subnets_private" {
   tags = merge(local.common_tags, tomap({"Name"= "db_subnet-${var.environment}-${element(local.list_of_azs, count.index)}"}))
 }
 
+######################################################
+# Private subnets for Vault & Consul Cluster         #
+# Each subnet in a different AZ                      #
+######################################################
+resource "aws_subnet" "vault_consul_subnets_private" {
+  count = local.used_azs
+
+  cidr_block              = var.db_azs_with_cidr[count.index]
+  vpc_id                  = aws_vpc.vpc.id
+  availability_zone       = local.list_of_azs[count.index]
+  map_public_ip_on_launch = false
+
+  tags = merge(local.common_tags, tomap({"Name"= "vault_consul_subnet-${var.environment}-${element(local.list_of_azs, count.index)}"}))
+}
+
