@@ -11,6 +11,7 @@ module "vpc" {
   private_azs_with_cidr = var.private_azs_with_cidr
   public_azs_with_cidr  = var.public_azs_with_cidr
   db_azs_with_cidr      = var.db_azs_with_cidr
+  vault_consul_azs_with_cidr = var.vault_consul_azs_with_cidr
   instance_tenancy      = var.instance_tenancy
   enable_dns            = var.enable_dns
   support_dns           = var.support_dns
