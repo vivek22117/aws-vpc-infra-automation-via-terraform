@@ -149,7 +149,7 @@ resource "aws_subnet" "db_subnets_private" {
 resource "aws_subnet" "vault_consul_subnets_private" {
   count = local.used_azs
 
-  cidr_block              = var.db_azs_with_cidr[count.index]
+  cidr_block              = var.vault_consul_azs_with_cidr[count.index]
   vpc_id                  = aws_vpc.vpc.id
   availability_zone       = local.list_of_azs[count.index]
   map_public_ip_on_launch = false
