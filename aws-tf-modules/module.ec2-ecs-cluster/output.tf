@@ -18,6 +18,11 @@ output "ecs-cluster-lb-domain" {
   description = "ECS cluster load balancer DNS name!"
 }
 
+output "ecs-cluster-lb-zoneId" {
+  value       = aws_alb.ecs_cluster_alb.zone_id
+  description = "ECS cluster load balancer Zone Id!"
+}
+
 
 output "ecs-cluster-id" {
   value       = aws_ecs_cluster.test_ecs_cluster.id
