@@ -18,6 +18,13 @@ output "ecs-cluster-lb-domain" {
   description = "ECS cluster load balancer DNS name!"
 }
 
+
+output "ecs-cluster-lb-zoneId" {
+  value       = module.vpc-es-cluster.ecs-cluster-lb-zoneId
+  description = "ECS cluster load balancer Zone Id!"
+}
+
+
 output "ecs-cluster-id" {
   value       = module.vpc-es-cluster.ecs-cluster-id
   description = "AWS DD ECS Cluster id!"
