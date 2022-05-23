@@ -107,7 +107,7 @@ resource "aws_alb_listener_rule" "ecs_alb_listener_rule" {
   depends_on = [aws_lb_target_group.ecs_alb_default_target_group]
 
   listener_arn = aws_lb_listener.ecs_alb_listener.arn
-  priority     = "100"
+  priority     = "500"
 
   action {
     type             = "forward"
