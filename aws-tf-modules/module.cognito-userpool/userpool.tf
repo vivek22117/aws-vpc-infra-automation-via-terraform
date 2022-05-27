@@ -1,7 +1,4 @@
 locals {
-  # password_policy
-  # If no password_policy is provided, build a password_policy using the default values
-  # If lambda_config is null
   password_policy_is_null = {
     minimum_length                   = var.password_policy_minimum_length
     require_lowercase                = var.password_policy_require_lowercase
@@ -27,9 +24,9 @@ locals {
 
 resource "aws_cognito_user_pool" "pool" {
 
-  name = var.user_pool_name
-  alias_attributes   = var.alias_attributes
-  auto_verified_attributes   = var.auto_verified_attributes
+  name                     = var.user_pool_name
+  alias_attributes         = var.alias_attributes
+  auto_verified_attributes = var.auto_verified_attributes
 
   username_configuration {
     case_sensitive = var.is_username_case_sensitive
@@ -39,9 +36,9 @@ resource "aws_cognito_user_pool" "pool" {
   /** Required Standard Attributes*/
   schema {
     attribute_data_type = "String"
-    mutable = true
-    name = "email"
-    required = true
+    mutable             = true
+    name                = "email"
+    required            = true
     string_attribute_constraints {
       min_length = 1
       max_length = 2048
@@ -50,9 +47,9 @@ resource "aws_cognito_user_pool" "pool" {
 
   schema {
     attribute_data_type = "String"
-    mutable = true
-    name = "given_name"
-    required = true
+    mutable             = true
+    name                = "given_name"
+    required            = true
     string_attribute_constraints {
       min_length = 1
       max_length = 2048
@@ -61,9 +58,9 @@ resource "aws_cognito_user_pool" "pool" {
 
   schema {
     attribute_data_type = "String"
-    mutable = true
-    name = "family_name"
-    required = true
+    mutable             = true
+    name                = "family_name"
+    required            = true
     string_attribute_constraints {
       min_length = 1
       max_length = 2048
