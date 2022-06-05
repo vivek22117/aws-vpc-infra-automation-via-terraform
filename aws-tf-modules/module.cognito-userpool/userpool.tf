@@ -1,6 +1,5 @@
 locals {
 
-  # admin_create_user_config
   # If no admin_create_user_config list is provided, build a admin_create_user_config using the default values
   admin_create_user_config_default = {
     allow_admin_create_user_only = lookup(var.admin_create_user_config, "allow_admin_create_user_only", null) == null ? var.admin_create_user_config_allow_admin_create_user_only : lookup(var.admin_create_user_config, "allow_admin_create_user_only")
@@ -49,6 +48,15 @@ locals {
   }
 
   software_token_mfa_configuration = var.mfa_configuration == "OFF" ? [] : [local.software_token_mfa_configuration_default]
+
+  # If no verification_message_template is provided, build a verification_message_template using the default values
+  verification_message_template_default = {
+    default_email_option  = lookup(var.verification_message_template, "default_email_option", null) == null ? var.verification_message_template_default_email_option : lookup(var.verification_message_template, "default_email_option")
+    email_message_by_link = lookup(var.verification_message_template, "email_message_by_link", null) == null ? var.verification_message_template_email_message_by_link : lookup(var.verification_message_template, "email_message_by_link")
+    email_subject_by_link = lookup(var.verification_message_template, "email_subject_by_link", null) == null ? var.verification_message_template_email_subject_by_link : lookup(var.verification_message_template, "email_subject_by_link")
+  }
+
+  verification_message_template = [local.verification_message_template_default]
 
 }
 
@@ -99,63 +107,63 @@ resource "aws_cognito_user_pool" "pool" {
     }
   }
 
-
-  /** Required Standard Attributes*/
-  schema {
-    attribute_data_type = "String"
-    mutable             = true
-    name                = "email"
-    required            = true
-    string_attribute_constraints {
-      min_length = 1
-      max_length = 2048
+  # schema
+  dynamic "schema" {
+    for_each = var.schemas == null ? [] : var.schemas
+    content {
+      attribute_data_type      = lookup(schema.value, "attribute_data_type")
+      developer_only_attribute = lookup(schema.value, "developer_only_attribute")
+      mutable                  = lookup(schema.value, "mutable")
+      name                     = lookup(schema.value, "name")
+      required                 = lookup(schema.value, "required")
     }
   }
 
-  schema {
-    attribute_data_type = "String"
-    mutable             = true
-    name                = "given_name"
-    required            = true
-    string_attribute_constraints {
-      min_length = 1
-      max_length = 2048
+  # schema (String)
+  dynamic "schema" {
+    for_each = var.string_schemas == null ? [] : var.string_schemas
+    content {
+      attribute_data_type      = lookup(schema.value, "attribute_data_type")
+      developer_only_attribute = lookup(schema.value, "developer_only_attribute")
+      mutable                  = lookup(schema.value, "mutable")
+      name                     = lookup(schema.value, "name")
+      required                 = lookup(schema.value, "required")
+
+      # string_attribute_constraints
+      dynamic "string_attribute_constraints" {
+        for_each = length(lookup(schema.value, "string_attribute_constraints")) == 0 ? [] : [lookup(schema.value, "string_attribute_constraints", {})]
+        content {
+          min_length = lookup(string_attribute_constraints.value, "min_length", 0)
+          max_length = lookup(string_attribute_constraints.value, "max_length", 0)
+        }
+      }
     }
   }
 
-  schema {
-    attribute_data_type = "String"
-    mutable             = true
-    name                = "family_name"
-    required            = true
-    string_attribute_constraints {
-      min_length = 1
-      max_length = 2048
+
+
+  # verification_message_template
+  dynamic "verification_message_template" {
+    for_each = local.verification_message_template
+    content {
+      default_email_option  = lookup(verification_message_template.value, "default_email_option")
+      email_message_by_link = lookup(verification_message_template.value, "email_message_by_link")
+      email_subject_by_link = lookup(verification_message_template.value, "email_subject_by_link")
     }
   }
 
-  /** Custom Attributes */
-  schema {
-    attribute_data_type      = "String"
-    developer_only_attribute = false
-    mutable                  = true
-    name                     = "PersonalInfo"
-    required                 = false
-    string_attribute_constraints {
-      min_length = 1
-      max_length = 2048
-    }
-  }
-
-  schema {
-    attribute_data_type      = "String"
-    developer_only_attribute = false
-    mutable                  = true
-    name                     = "Role"
-    required                 = false
-    string_attribute_constraints {
-      min_length = 1
-      max_length = 2048
+  # account_recovery_setting
+  dynamic "account_recovery_setting" {
+    for_each = length(var.recovery_mechanisms) == 0 ? [] : [1]
+    content {
+      # recovery_mechanism
+      dynamic "recovery_mechanism" {
+        for_each = var.recovery_mechanisms
+        content {
+          name     = lookup(recovery_mechanism.value, "name")
+          priority = lookup(recovery_mechanism.value, "priority")
+        }
+      }
     }
   }
 
@@ -169,6 +177,10 @@ resource "aws_cognito_user_pool" "pool" {
       require_uppercase                = lookup(password_policy.value, "require_uppercase")
       temporary_password_validity_days = lookup(password_policy.value, "temporary_password_validity_days")
     }
+  }
+
+  user_pool_add_ons {
+    advanced_security_mode = var.advanced_security_mode
   }
 
 

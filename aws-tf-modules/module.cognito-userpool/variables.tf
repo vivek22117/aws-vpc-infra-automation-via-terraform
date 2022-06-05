@@ -16,6 +16,12 @@ variable "component_name" {
   description = "Component name for resources"
 }
 
+variable "enabled" {
+  description = "Change to false to avoid deploying any resources"
+  type        = bool
+  default     = true
+}
+
 ##############################################
 #    Cognito configuration variables         #
 ##############################################
@@ -125,6 +131,19 @@ variable "email_configuration_from_email_address" {
   default     = null
 }
 
+# schema
+variable "schemas" {
+  description = "A container with the schema attributes of a user pool."
+  type        = list(any)
+  default     = []
+}
+
+variable "string_schemas" {
+  description = "A container with the string schema attributes of a user pool"
+  type        = list(any)
+  default     = []
+}
+
 # password_policy
 variable "password_policy" {
   description = "A container for information about the user pool password policy"
@@ -184,3 +203,180 @@ variable "password_policy_temporary_password_validity_days" {
   default     = 7
 }
 
+
+# verification_message_template
+variable "verification_message_template" {
+  description = "The verification message templates configuration"
+  type        = map(any)
+  default     = {}
+}
+
+variable "verification_message_template_default_email_option" {
+  description = "The default email option. Must be either `CONFIRM_WITH_CODE` or `CONFIRM_WITH_LINK`. Defaults to `CONFIRM_WITH_CODE`"
+  type        = string
+  default     = null
+}
+
+variable "verification_message_template_email_message_by_link" {
+  description = "The email message template for sending a confirmation link to the user, it must contain the `{##Click Here##}` placeholder"
+  type        = string
+  default     = null
+}
+
+variable "verification_message_template_email_subject_by_link" {
+  description = "The subject line for the email message template for sending a confirmation link to the user"
+  type        = string
+  default     = null
+}
+
+variable "recovery_mechanisms" {
+  description = "The list of Account Recovery Options"
+  type        = list(any)
+  # [
+  #   {
+  #     name          = "verified_email"
+  #     priority      = 1
+  #   },
+  #   {
+  #     name          = "verified_phone_number"
+  #     priority      = 2
+  #   }
+  # ]
+  default = []
+}
+
+
+#=================================Cognito Client Config Variables=========================#
+variable "clients" {
+  description = "A container with the clients definitions"
+  type        = any
+  default     = []
+}
+
+variable "client_allowed_oauth_flows" {
+  description = "The name of the application client"
+  type        = list(string)
+  default     = []
+}
+
+variable "client_allowed_oauth_flows_user_pool_client" {
+  description = "Whether the client is allowed to follow the OAuth protocol when interacting with Cognito user pools"
+  type        = bool
+  default     = true
+}
+
+variable "client_allowed_oauth_scopes" {
+  description = "List of allowed OAuth scopes (phone, email, openid, profile, and aws.cognito.signin.user.admin)"
+  type        = list(string)
+  default     = []
+}
+
+variable "client_callback_urls" {
+  description = "List of allowed callback URLs for the identity providers"
+  type        = list(string)
+  default     = []
+}
+
+variable "client_default_redirect_uri" {
+  description = "The default redirect URI. Must be in the list of callback URLs"
+  type        = string
+  default     = ""
+}
+
+variable "client_explicit_auth_flows" {
+  description = "List of authentication flows (ADMIN_NO_SRP_AUTH, CUSTOM_AUTH_FLOW_ONLY, USER_PASSWORD_AUTH)"
+  type        = list(string)
+  default     = []
+}
+
+variable "client_generate_secret" {
+  description = "Should an application secret be generated"
+  type        = bool
+  default     = true
+}
+
+variable "client_logout_urls" {
+  description = "List of allowed logout URLs for the identity providers"
+  type        = list(string)
+  default     = []
+}
+
+variable "client_name" {
+  description = "The name of the application client"
+  type        = string
+  default     = null
+}
+
+variable "client_read_attributes" {
+  description = "List of user pool attributes the application client can read from"
+  type        = list(string)
+  default     = []
+}
+
+variable "client_prevent_user_existence_errors" {
+  description = "Choose which errors and responses are returned by Cognito APIs during authentication, account confirmation, and password recovery when the user does not exist in the user pool. When set to ENABLED and the user does not exist, authentication returns an error indicating either the username or password was incorrect, and account confirmation and password recovery return a response indicating a code was sent to a simulated destination. When set to LEGACY, those APIs will return a UserNotFoundException exception if the user does not exist in the user pool."
+  type        = string
+  default     = null
+}
+
+variable "client_supported_identity_providers" {
+  description = "List of provider names for the identity providers that are supported on this client"
+  type        = list(string)
+  default     = []
+}
+
+variable "client_write_attributes" {
+  description = "List of user pool attributes the application client can write to"
+  type        = list(string)
+  default     = []
+}
+
+variable "client_access_token_validity" {
+  description = "Time limit, between 5 minutes and 1 day, after which the access token is no longer valid and cannot be used. This value will be overridden if you have entered a value in `token_validity_units`."
+  type        = number
+  default     = 60
+}
+
+variable "client_id_token_validity" {
+  description = "Time limit, between 5 minutes and 1 day, after which the ID token is no longer valid and cannot be used. Must be between 5 minutes and 1 day. Cannot be greater than refresh token expiration. This value will be overridden if you have entered a value in `token_validity_units`."
+  type        = number
+  default     = 60
+}
+
+variable "client_refresh_token_validity" {
+  description = "The time limit in days refresh tokens are valid for. Must be between 60 minutes and 3650 days. This value will be overridden if you have entered a value in `token_validity_units`"
+  type        = number
+  default     = 30
+}
+
+variable "client_token_validity_units" {
+  description = "Configuration block for units in which the validity times are represented in. Valid values for the following arguments are: `seconds`, `minutes`, `hours` or `days`."
+  type        = any
+  default = {
+    access_token  = "minutes"
+    id_token      = "minutes"
+    refresh_token = "days"
+  }
+
+}
+
+#===================== AWS Cognito User Pool Domain Config Variables ===========================#
+#
+variable "domain" {
+  description = "Cognito User Pool domain"
+  type        = string
+  default     = null
+}
+
+variable "domain_certificate_arn" {
+  description = "The ARN of an ISSUED ACM certificate in us-east-1 for a custom domain"
+  type        = string
+  default     = null
+}
+
+
+variable "advanced_security_mode" {
+  type        = string
+  description = "(Optional) The mode for advanced security, must be one of `OFF`, `AUDIT` or `ENFORCED`. For details see https://aws.amazon.com/cognito/pricing/"
+  default     = "OFF"
+}
