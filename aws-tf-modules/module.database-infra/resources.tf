@@ -11,6 +11,10 @@ resource "aws_db_subnet_group" "auth_service_sub_group" {
   tags = merge(local.common_tags, map("Name", "${var.environment}-auth-serivce"))
 }
 
+resource "random_password" "master_password" {
+  length  = 16
+  special = false
+}
 
 resource "aws_rds_cluster" "auth_service_db" {
   count = var.enabled ? 1 : 0
@@ -22,8 +26,8 @@ resource "aws_rds_cluster" "auth_service_db" {
   engine_version     = var.db_engine_version
 
   database_name                = var.database_name
-  master_username              = jsondecode(aws_secretsmanager_secret_version.auth_service_cred.secret_string)["username"]
-  master_password              = jsondecode(aws_secretsmanager_secret_version.auth_service_cred.secret_string)["password"]
+  master_username              = var.username
+  master_password              = random_password.master_password.result
   skip_final_snapshot          = var.skip_final_snapshot
   backup_retention_period      = var.backup_retention_period
   preferred_backup_window      = var.preferred_backup_window
