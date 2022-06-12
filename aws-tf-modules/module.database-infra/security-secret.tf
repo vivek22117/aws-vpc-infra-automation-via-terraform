@@ -36,6 +36,11 @@ resource "aws_security_group" "auth_service_db_sg" {
 
 
 resource "aws_secretsmanager_secret" "auth_service_secrets" {
+  depends_on = [
+    aws_rds_cluster.auth_service_db,
+    random_password.master_password
+  ]
+
   name        = "auth-service/client/db-credentials"
   description = "Auth-Service DB credentials"
 
@@ -43,6 +48,11 @@ resource "aws_secretsmanager_secret" "auth_service_secrets" {
 }
 
 resource "aws_secretsmanager_secret_version" "auth_service_cred" {
+  depends_on = [
+    aws_rds_cluster.auth_service_db,
+    random_password.master_password
+  ]
+
   secret_id = aws_secretsmanager_secret.auth_service_secrets.id
 
   secret_string = jsonencode(
