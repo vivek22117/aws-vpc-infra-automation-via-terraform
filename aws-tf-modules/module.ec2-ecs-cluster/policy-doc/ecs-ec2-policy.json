@@ -84,6 +84,28 @@
         "ec2messages:SendReply"
       ],
       "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "secretsmanager:GetResourcePolicy",
+        "secretsmanager:GetSecretValue",
+        "secretsmanager:DescribeSecret",
+        "secretsmanager:ListSecretVersionIds"
+      ],
+      "Resource": [
+        "arn:aws:secretsmanager:${aws_region}:${aws_account_id}:secret:auth-service/client/db-credentials-tjnfJD"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": "secretsmanager:ListSecrets",
+      "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": "ses:*",
+      "Resource": "*"
     }
   ]
 }
