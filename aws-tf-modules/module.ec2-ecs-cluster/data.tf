@@ -5,9 +5,9 @@ data "terraform_remote_state" "vpc" {
   backend = "s3"
 
   config = {
-    bucket  = "${var.environment}-tfstate-${data.aws_caller_identity.current.account_id}-${var.default_region}"
-    key     = "state/${var.environment}/vpc/terraform.tfstate"
-    region  = var.default_region
+    bucket = "${var.environment}-tfstate-${data.aws_caller_identity.current.account_id}-${var.default_region}"
+    key    = "state/${var.environment}/vpc/terraform.tfstate"
+    region = var.default_region
   }
 }
 
@@ -18,15 +18,20 @@ data "terraform_remote_state" "vpc-resources" {
   backend = "s3"
 
   config = {
-    bucket  = "${var.environment}-tfstate-${data.aws_caller_identity.current.account_id}-${var.default_region}"
-    key     = "state/${var.environment}/vpc-endpoints/terraform.tfstate"
-    region  = var.default_region
+    bucket = "${var.environment}-tfstate-${data.aws_caller_identity.current.account_id}-${var.default_region}"
+    key    = "state/${var.environment}/vpc-endpoints/terraform.tfstate"
+    region = var.default_region
   }
 }
 
 
 data "template_file" "ecs_instance_policy_template" {
   template = file("${path.module}/policy-doc/ecs-ec2-policy.json")
+
+  vars = {
+    aws_region     = var.default_region
+    aws_account_id = data.aws_caller_identity.current.account_id
+  }
 }
 
 data "template_file" "ec2_user_data" {
