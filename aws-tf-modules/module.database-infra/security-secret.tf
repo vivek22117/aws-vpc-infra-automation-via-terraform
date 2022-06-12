@@ -57,12 +57,12 @@ resource "aws_secretsmanager_secret_version" "auth_service_cred" {
 
   secret_string = jsonencode(
     {
-      "username" : aws_rds_cluster.auth_service_db.master_username,
+      "username" : aws_rds_cluster.auth_service_db[0].master_username,
       "password" : random_password.master_password.result,
       "engine" : "postgresql",
-      "host" : aws_rds_cluster.auth_service_db.endpoint,
-      "port" : aws_rds_cluster.auth_service_db.port,
-      "dbClusterIdentifier" : aws_rds_cluster.auth_service_db.cluster_identifier
+      "host" : aws_rds_cluster.auth_service_db[0].endpoint,
+      "port" : aws_rds_cluster.auth_service_db[0].port,
+      "dbClusterIdentifier" : aws_rds_cluster.auth_service_db[0].cluster_identifier
     }
   )
 }
