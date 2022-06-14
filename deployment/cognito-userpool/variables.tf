@@ -19,7 +19,6 @@ variable "component_name" {
 variable "enabled" {
   description = "Change to false to avoid deploying any resources"
   type        = bool
-  default     = true
 }
 
 ##############################################
@@ -32,13 +31,13 @@ variable "user_pool_name" {
 
 variable "is_username_case_sensitive" {
   type        = bool
-  description = "The Username Configuration. Seting `case_sesiteve` specifies whether username case sensitivity will be applied for all users in the user pool"
+  description = "The Username Configuration. Setting `case_sensitive` specifies whether username case sensitivity will be applied for all users in the user pool"
 }
 
 variable "alias_attributes" {
   description = "Attributes supported as an alias for this user pool. Possible values: phone_number, email, or preferred_username. Conflicts with `username_attributes`"
   type        = list(string)
-  default     = ["email", "phone_number"]
+  default     = ["email", "phone_number", "preferred_username"]
 }
 
 variable "auto_verified_attributes" {
@@ -50,26 +49,22 @@ variable "auto_verified_attributes" {
 variable "mfa_configuration" {
   description = "Set to enable multi-factor authentication. Must be one of the following values (ON, OFF, OPTIONAL)"
   type        = string
-  default     = "OFF"
 }
 
 # software_token_mfa_configuration
 variable "software_token_mfa_configuration" {
   description = "Configuration block for software token MFA (multifactor-auth). mfa_configuration must also be enabled for this to work"
   type        = map(any)
-  default     = {}
 }
 
 variable "software_token_mfa_configuration_enabled" {
   description = "If true, and if mfa_configuration is also enabled, multi-factor authentication by software TOTP generator will be enabled"
   type        = bool
-  default     = false
 }
 
 variable "admin_create_user_config" {
   description = "The configuration for AdminCreateUser requests"
   type        = map(any)
-  default     = {}
 }
 
 variable "admin_create_user_config_allow_admin_create_user_only" {
@@ -100,11 +95,6 @@ variable "admin_create_user_config_sms_message" {
 variable "email_configuration" {
   description = "The Email Configuration"
   type        = map(any)
-  default = {
-    email_sending_account  = "DEVELOPER"
-    reply_to_email_address = "email@mydomain.com"
-    source_arn             = "arn:aws:ses:us-east-1:123456789012:identity/admin@doubledigit-soltuions.com"
-  }
 }
 
 variable "email_configuration_reply_to_email_address" {
@@ -135,13 +125,11 @@ variable "email_configuration_from_email_address" {
 variable "schemas" {
   description = "A container with the schema attributes of a user pool."
   type        = list(any)
-  default     = []
 }
 
 variable "string_schemas" {
   description = "A container with the string schema attributes of a user pool"
   type        = list(any)
-  default     = []
 }
 
 # password_policy
@@ -199,7 +187,6 @@ variable "password_policy_temporary_password_validity_days" {
 variable "verification_message_template" {
   description = "The verification message templates configuration"
   type        = map(any)
-  default     = {}
 }
 
 variable "verification_message_template_default_email_option" {
@@ -223,17 +210,6 @@ variable "verification_message_template_email_subject_by_link" {
 variable "recovery_mechanisms" {
   description = "The list of Account Recovery Options"
   type        = list(any)
-  # [
-  #   {
-  #     name          = "verified_email"
-  #     priority      = 1
-  #   },
-  #   {
-  #     name          = "verified_phone_number"
-  #     priority      = 2
-  #   }
-  # ]
-  default = []
 }
 
 # user_pool_add_ons
