@@ -41,7 +41,7 @@ resource "aws_secretsmanager_secret" "auth_service_secrets" {
     random_password.master_password
   ]
 
-  name        = "auth-service/client/db-credentials"
+  name        = "auth/client/db-credentials"
   description = "Auth-Service DB credentials"
 
   tags = merge(local.common_tags, map("Name", "${var.environment}-auth-serivce"))
