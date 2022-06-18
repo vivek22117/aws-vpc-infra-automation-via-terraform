@@ -1,0 +1,22 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": [
+          "*"
+        ]
+      },
+      "Action": "SQS:SendMessage",
+      "Resource": [
+        "${security_sqs_arn}"
+      ],
+      "Condition": {
+        "ArnEquals": {
+          "aws:SourceArn": "${security_sns_arn}"
+        }
+      }
+    }
+  ]
+}
