@@ -4,8 +4,7 @@
 resource "aws_cloudtrail" "vpc_cloudTrail" {
 
   depends_on = [
-    aws_cloudwatch_log_group.cloudtrail_logGroup,
-    aws_s3_bucket_policy.s3_bucket_trail_policy
+    aws_cloudwatch_log_group.cloudtrail_logGroup
   ]
 
   name                          = "${var.environment}-CloudTrail"
