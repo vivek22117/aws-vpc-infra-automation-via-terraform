@@ -41,16 +41,6 @@ resource "aws_cloudtrail" "vpc_cloudTrail" {
 }
 
 
-resource "aws_s3_bucket_policy" "s3_bucket_trail_policy" {
-  bucket = data.terraform_remote_state.s3.outputs.cloudtrail_s3_name
-
-  policy = templatefile("${path.module}/scripts/s3-bucket-policy.json", {
-    bucket_arn     = data.terraform_remote_state.s3.outputs.cloudtrail_s3_arn
-    s3_bucket_name = data.terraform_remote_state.s3.outputs.cloudtrail_s3_name
-  })
-}
-
-
 ####################################################################################
 # Setup cloudwatch logs to receive cloudtrail events and audit filter for alarms   #
 ####################################################################################
