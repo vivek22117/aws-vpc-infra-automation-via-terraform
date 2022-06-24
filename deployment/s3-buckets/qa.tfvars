@@ -99,5 +99,27 @@ bucket_config = {
     expiry_prefix          = ""
     expiry_days            = 1825
     noncurrent_expiry_days = 30
+  },
+  "vault_licensing" = {
+    bucket_prefix       = "vault-cluster-license"
+    bucket_acl          = "private"
+    fore_destroy        = false
+    acceleration_status = "Suspended"
+    sse_algorithm       = "AES256"
+    kms_master_key_id   = ""
+    enable_versioning   = true
+
+    infrequent_transition_enabled = false
+    infrequent_transition_prefix  = ""
+    infrequent_transition_days    = null
+
+    glacier_transition_enabled = false
+    glacier_transition_prefix  = ""
+    glacier_transition_days    = null
+
+    expiry_enabled         = false
+    expiry_prefix          = ""
+    expiry_days            = null
+    noncurrent_expiry_days = null
   }
 }
