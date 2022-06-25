@@ -22,6 +22,12 @@ variable "enabled" {
   default     = true
 }
 
+#####===================================Route53 Configuration===================================#####
+variable "route53_domain" {
+  type        = string
+  description = "Domain name registered with AWS Route 53"
+}
+
 ##############################################
 #    Cognito configuration variables         #
 ##############################################
@@ -363,10 +369,10 @@ variable "client_token_validity_units" {
 
 #===================== AWS Cognito User Pool Domain Config Variables ===========================#
 #
-variable "domain" {
+variable "cognito_domain" {
   description = "Cognito User Pool domain"
   type        = string
-  default     = null
+  default     = "auth.cloud-interview.in"
 }
 
 variable "domain_certificate_arn" {
