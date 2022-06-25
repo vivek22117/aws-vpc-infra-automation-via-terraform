@@ -22,9 +22,10 @@ software_token_mfa_configuration = {
 }
 
 admin_create_user_config = {
-  email_message = "Dear {username}, your verification code is {####}."
-  email_subject = "Here, your verification code baby"
-  sms_message   = "Your username is {username} and temporary password is {####}."
+  allow_admin_create_user_only = false
+  email_message                = "Dear {username}, your verification code is {####}."
+  email_subject                = "Here, your verification code baby"
+  sms_message                  = "Your username is {username} and temporary password is {####}."
 }
 
 email_configuration = {
