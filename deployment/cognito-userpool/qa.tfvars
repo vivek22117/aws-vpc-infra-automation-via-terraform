@@ -5,12 +5,15 @@ component_name = "blog-api-userpool"
 
 user_pool_name             = "blog-api-userpool"
 is_username_case_sensitive = true
+
 alias_attributes = [
   "email",
   "phone_number",
-"preferred_username"]
+  "preferred_username"
+]
 auto_verified_attributes = [
-"email"]
+  "email"
+]
 
 mfa_configuration = "OPTIONAL"
 software_token_mfa_configuration = {
@@ -25,8 +28,8 @@ admin_create_user_config = {
 
 email_configuration = {
   email_sending_account  = "DEVELOPER"
-  reply_to_email_address = "admin@cloud-interview.in"
-  source_arn             = "arn:aws:ses:us-east-1:123456789012:identity/admin@doubledigit-soltuions.com"
+  reply_to_email_address = "admin@doubledigit-solutions.in"
+  from_email_address     = "admin@doubledigit-solutions.in"
 }
 
 schemas = [
