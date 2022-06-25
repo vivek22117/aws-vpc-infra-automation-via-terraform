@@ -11,7 +11,6 @@ locals {
 
   email_configuration_default = {
     reply_to_email_address = lookup(var.email_configuration, "reply_to_email_address", null) == null ? var.email_configuration_reply_to_email_address : lookup(var.email_configuration, "reply_to_email_address")
-    source_arn             = lookup(var.email_configuration, "source_arn", null) == null ? var.email_configuration_source_arn : lookup(var.email_configuration, "source_arn")
     email_sending_account  = lookup(var.email_configuration, "email_sending_account", null) == null ? var.email_configuration_email_sending_account : lookup(var.email_configuration, "email_sending_account")
     from_email_address     = lookup(var.email_configuration, "from_email_address", null) == null ? var.email_configuration_from_email_address : lookup(var.email_configuration, "from_email_address")
   }
@@ -93,7 +92,7 @@ resource "aws_cognito_user_pool" "pool" {
     for_each = local.email_configuration
     content {
       reply_to_email_address = lookup(email_configuration.value, "reply_to_email_address")
-      source_arn             = lookup(email_configuration.value, "source_arn")
+      source_arn             = aws_ses_domain_identity.ses-domain.arn
       email_sending_account  = lookup(email_configuration.value, "email_sending_account")
       from_email_address     = lookup(email_configuration.value, "from_email_address")
     }
