@@ -339,18 +339,11 @@ variable "client_token_validity_units" {
 
 #===================== AWS Cognito User Pool Domain Config Variables ===========================#
 #
-variable "domain" {
+variable "cognito_domain" {
   description = "Cognito User Pool domain"
   type        = string
-  default     = null
+  default     = "auth.cloud-interview.in"
 }
-
-variable "domain_certificate_arn" {
-  description = "The ARN of an ISSUED ACM certificate in us-east-1 for a custom domain"
-  type        = string
-  default     = null
-}
-
 
 variable "advanced_security_mode" {
   type        = string

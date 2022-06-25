@@ -229,17 +229,7 @@ variable "verification_message_template_email_subject_by_link" {
 variable "recovery_mechanisms" {
   description = "The list of Account Recovery Options"
   type        = list(any)
-  # [
-  #   {
-  #     name          = "verified_email"
-  #     priority      = 1
-  #   },
-  #   {
-  #     name          = "verified_phone_number"
-  #     priority      = 2
-  #   }
-  # ]
-  default = []
+  default     = []
 }
 
 # user_pool_add_ons
@@ -373,12 +363,6 @@ variable "cognito_domain" {
   description = "Cognito User Pool domain"
   type        = string
   default     = "auth.cloud-interview.in"
-}
-
-variable "domain_certificate_arn" {
-  description = "The ARN of an ISSUED ACM certificate in us-east-1 for a custom domain"
-  type        = string
-  default     = null
 }
 
 
