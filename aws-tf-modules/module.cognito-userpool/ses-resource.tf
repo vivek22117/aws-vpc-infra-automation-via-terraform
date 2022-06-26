@@ -56,7 +56,7 @@ resource "aws_s3_bucket_policy" "bucket_policy" {
                 "Service": "ses.amazonaws.com"
             },
             "Action": "s3:PutObject",
-            "Resource": "${aws_s3_bucket.emails_bucket.id}/*"
+            "Resource": "${aws_s3_bucket.emails_bucket.arn}/*"
         }
     ]
 }
