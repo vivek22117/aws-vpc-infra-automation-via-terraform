@@ -2,8 +2,6 @@ default_region = "us-east-1"
 enabled        = true
 
 component_name = "blog-api-userpool"
-cognito_domain = "auth.cloud-interview.in"
-route53_domain = "cloud-interview.in"
 
 user_pool_name             = "blog-api-userpool"
 is_username_case_sensitive = true
