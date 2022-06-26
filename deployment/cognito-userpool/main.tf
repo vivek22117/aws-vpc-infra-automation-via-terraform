@@ -39,6 +39,5 @@ module "cognito_userpool" {
   user_pool_add_ons = var.user_pool_add_ons
 
 
-  clients        = var.clients
-  route53_domain = var.route53_domain
+  clients = var.clients
 }
