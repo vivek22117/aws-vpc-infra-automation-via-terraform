@@ -145,8 +145,8 @@ clients = [
     allowed_oauth_flows                  = ["code"]
     allowed_oauth_flows_user_pool_client = true
     allowed_oauth_scopes                 = ["email", "openid"]
-    callback_urls                        = ["https://cloud-interview.in/callback", "https://cloud-interview.in/anothercallback"]
-    default_redirect_uri                 = "https://cloud-interview.in/callback"
+    callback_urls                        = ["https://cloud-interview.in"]
+    default_redirect_uri                 = "https://cloud-interview.in"
     generate_secret                      = false
     prevent_user_existence_errors        = "ENABLED"
     read_attributes                      = ["email", "email_verified", "phone_number"]
@@ -163,6 +163,7 @@ clients = [
       id_token      = "minutes"
       refresh_token = "days"
     }
+    supported_identity_providers = ["COGNITO"]
   }
 ]
 
