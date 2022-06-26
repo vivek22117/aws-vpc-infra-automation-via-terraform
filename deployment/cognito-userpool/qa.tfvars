@@ -134,7 +134,7 @@ password_policy = {
 }
 
 verification_message_template = {
-  default_email_option = "CONFIRM_WITH_CODE"
+  default_email_option = "CONFIRM_WITH_LINK"
 }
 
 user_pool_add_ons = {
