@@ -63,7 +63,6 @@ variable "mfa_configuration" {
 variable "software_token_mfa_configuration" {
   description = "Configuration block for software token MFA (multifactor-auth). mfa_configuration must also be enabled for this to work"
   type        = map(any)
-  default     = {}
 }
 
 variable "software_token_mfa_configuration_enabled" {
@@ -75,7 +74,6 @@ variable "software_token_mfa_configuration_enabled" {
 variable "admin_create_user_config" {
   description = "The configuration for AdminCreateUser requests"
   type        = map(any)
-  default     = {}
 }
 
 variable "admin_create_user_config_allow_admin_create_user_only" {
@@ -106,11 +104,6 @@ variable "admin_create_user_config_sms_message" {
 variable "email_configuration" {
   description = "The Email Configuration"
   type        = map(any)
-  default = {
-    email_sending_account  = "DEVELOPER"
-    reply_to_email_address = "email@mydomain.com"
-    source_arn             = "arn:aws:ses:us-east-1:123456789012:identity/admin@doubledigit-soltuions.com"
-  }
 }
 
 variable "email_configuration_reply_to_email_address" {
@@ -128,7 +121,7 @@ variable "email_configuration_source_arn" {
 variable "email_configuration_email_sending_account" {
   description = "Instruct Cognito to either use its built-in functional or Amazon SES to send out emails. Allowed values: `COGNITO_DEFAULT` or `DEVELOPER`"
   type        = string
-  default     = "COGNITO_DEFAULT"
+  default     = "DEVELOPER"
 }
 
 variable "email_configuration_from_email_address" {
@@ -205,7 +198,6 @@ variable "password_policy_temporary_password_validity_days" {
 variable "verification_message_template" {
   description = "The verification message templates configuration"
   type        = map(any)
-  default     = {}
 }
 
 variable "verification_message_template_default_email_option" {

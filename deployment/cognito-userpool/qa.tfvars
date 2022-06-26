@@ -9,8 +9,7 @@ is_username_case_sensitive = true
 
 alias_attributes = [
   "email",
-  "phone_number",
-  "preferred_username"
+  "phone_number"
 ]
 auto_verified_attributes = [
   "email"
@@ -73,7 +72,7 @@ string_schemas = [
     attribute_data_type      = "String"
     developer_only_attribute = false
     mutable                  = true
-    name                     = "mobile"
+    name                     = "phone_number"
     required                 = false
 
     string_attribute_constraints = {
@@ -146,7 +145,7 @@ user_pool_add_ons = {
 clients = [
   {
     name                          = "blog-app-client"
-    read_attributes               = ["email", "email_verified", "preferred_username"]
+    read_attributes               = ["email", "email_verified", "phone_number"]
     allowed_oauth_scopes          = ["email", "openid"]
     callback_urls                 = ["https://cloud-interview.in/callback", "https://cloud-interview.in/anothercallback"]
     default_redirect_uri          = "https://cloud-interview.in/callback"

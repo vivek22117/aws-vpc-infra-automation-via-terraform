@@ -21,6 +21,12 @@ variable "enabled" {
   type        = bool
 }
 
+#####===================================Route53 Configuration===================================#####
+variable "route53_domain" {
+  type        = string
+  description = "Domain name registered with AWS Route 53"
+}
+
 ##############################################
 #    Cognito configuration variables         #
 ##############################################
@@ -37,13 +43,11 @@ variable "is_username_case_sensitive" {
 variable "alias_attributes" {
   description = "Attributes supported as an alias for this user pool. Possible values: phone_number, email, or preferred_username. Conflicts with `username_attributes`"
   type        = list(string)
-  default     = ["email", "phone_number", "preferred_username"]
 }
 
 variable "auto_verified_attributes" {
   description = "The attributes to be auto-verified. Possible values: email, phone_number"
   type        = list(string)
-  default     = ["email"]
 }
 
 variable "mfa_configuration" {
@@ -112,7 +116,7 @@ variable "email_configuration_source_arn" {
 variable "email_configuration_email_sending_account" {
   description = "Instruct Cognito to either use its built-in functional or Amazon SES to send out emails. Allowed values: `COGNITO_DEFAULT` or `DEVELOPER`"
   type        = string
-  default     = "COGNITO_DEFAULT"
+  default     = "DEVELOPER"
 }
 
 variable "email_configuration_from_email_address" {
