@@ -203,7 +203,7 @@ variable "verification_message_template_default_email_option" {
 variable "verification_message_template_email_message_by_link" {
   description = "The email message template for sending a confirmation link to the user, it must contain the `{##Click Here##}` placeholder"
   type        = string
-  default     = "Please click the link below to verify your email address. {##Verify Email##}."
+  default     = "Please click the link below to verify your email address. {##Click Here##}."
 }
 
 variable "verification_message_template_email_subject_by_link" {

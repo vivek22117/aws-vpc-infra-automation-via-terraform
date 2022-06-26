@@ -7,8 +7,7 @@ user_pool_name             = "blog-api-userpool"
 is_username_case_sensitive = true
 
 alias_attributes = [
-  "email",
-  "phone_number"
+  "email"
 ]
 auto_verified_attributes = [
   "email"
