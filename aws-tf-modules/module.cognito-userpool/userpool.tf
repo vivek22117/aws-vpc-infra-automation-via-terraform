@@ -93,7 +93,7 @@ resource "aws_cognito_user_pool" "pool" {
     for_each = local.email_configuration
     content {
       reply_to_email_address = lookup(email_configuration.value, "reply_to_email_address")
-      source_arn             = aws_ses_domain_identity.ses-domain.arn
+      source_arn             = aws_ses_email_identity.ses-domain.arn
       email_sending_account  = lookup(email_configuration.value, "email_sending_account")
       from_email_address     = lookup(email_configuration.value, "from_email_address")
     }
