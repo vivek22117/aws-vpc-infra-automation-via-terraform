@@ -1,11 +1,33 @@
-resource "aws_ses_domain_identity" "ses-domain" {
-  domain = "cloud-interview.in"
+//resource "aws_ses_domain_identity" "ses-domain" {
+//  domain = "cloud-interview.in"
+//}
+
+//# Example Route53 MX record
+//resource "aws_route53_record" "example_ses_domain_mail_from_mx" {
+//  zone_id = aws_route53_zone.example.id
+//  name    = aws_ses_domain_mail_from.example.mail_from_domain
+//  type    = "MX"
+//  ttl     = "600"
+//  records = ["10 feedback-smtp.us-east-1.amazonses.com"] # Change to the region in which `aws_ses_domain_identity.example` is created
+//}
+//
+//# Example Route53 TXT record for SPF
+//resource "aws_route53_record" "example_ses_domain_mail_from_txt" {
+//  zone_id = aws_route53_zone.example.id
+//  name    = aws_ses_domain_mail_from.example.mail_from_domain
+//  type    = "TXT"
+//  ttl     = "600"
+//  records = ["v=spf1 include:amazonses.com -all"]
+//}
+
+//resource "aws_ses_domain_dkim" "ses-domain-dkim" {
+//  domain = aws_ses_domain_identity.ses-domain.domain
+//}
+
+resource "aws_ses_email_identity" "ses-domain" {
+  email = "admin@doubledigit-solutions.com"
 }
 
-
-resource "aws_ses_domain_dkim" "ses-domain-dkim" {
-  domain = aws_ses_domain_identity.ses-domain.domain
-}
 
 resource "aws_s3_bucket" "emails_bucket" {
   bucket = "blog-api-ses-integration"
