@@ -3,5 +3,5 @@ resource "aws_cognito_user_pool_domain" "user_pool_domain" {
 
   domain          = var.cognito_domain
   certificate_arn = aws_acm_certificate.cognito_auth_acm.arn
-  user_pool_id    = aws_cognito_user_pool.pool[0].id
+  user_pool_id    = data.terraform_remote_state.cognito_userpool.outputs.userpool_id
 }
