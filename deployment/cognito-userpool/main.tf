@@ -11,7 +11,7 @@ module "route53_config" {
 }
 
 
-module "vpc" {
+module "cognito_userpool" {
   depends_on = [module.route53_config]
 
   source = "../../aws-tf-modules/module.cognito-userpool"
