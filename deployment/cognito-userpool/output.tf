@@ -1,11 +1,11 @@
 output "userpool_id" {
   description = "The id of the user pool"
-  value       = module.cognito_userpool.id
+  value       = module.cognito_userpool.user_pool_id
 }
 
 output "userpool_arn" {
   description = "The ARN of the user pool"
-  value       = module.cognito_userpool.arn
+  value       = module.cognito_userpool.userpool_arn
 }
 
 output "userpool_endpoint" {
