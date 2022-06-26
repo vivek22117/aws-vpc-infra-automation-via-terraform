@@ -64,6 +64,7 @@ variable "software_token_mfa_configuration" {
 variable "software_token_mfa_configuration_enabled" {
   description = "If true, and if mfa_configuration is also enabled, multi-factor authentication by software TOTP generator will be enabled"
   type        = bool
+  default     = false
 }
 
 variable "admin_create_user_config" {
