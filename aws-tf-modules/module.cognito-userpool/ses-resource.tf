@@ -51,10 +51,8 @@ resource "aws_ses_email_identity" "ses-domain" {
   email = "admin@doubledigit-solutions.com"
 }
 
-
 resource "aws_s3_bucket" "emails_bucket" {
   bucket = "blog-api-ses-integration"
-  acl    = "private"
 }
 
 resource "null_resource" "delay" {
