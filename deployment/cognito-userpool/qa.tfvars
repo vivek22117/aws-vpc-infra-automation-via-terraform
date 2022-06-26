@@ -1,6 +1,6 @@
 default_region = "us-east-1"
+enabled        = true
 
-environment    = "qa"
 component_name = "blog-api-userpool"
 cognito_domain = "auth.cloud-interview.in"
 route53_domain = "cloud-interview.in"
