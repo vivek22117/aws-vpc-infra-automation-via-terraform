@@ -50,7 +50,7 @@ resource "aws_acm_certificate_validation" "cert" {
 resource "aws_route53_record" "cognito_web_1" {
 
   zone_id = data.aws_route53_zone.cloud_interview.zone_id
-  name    = aws_cognito_user_pool_domain.user_pool_domain.domain
+  name    = aws_cognito_user_pool_domain.user_pool_domain[0].domain
   type    = "A"
 
   alias {
