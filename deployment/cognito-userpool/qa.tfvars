@@ -141,13 +141,15 @@ user_pool_add_ons = {
 
 clients = [
   {
-    name                          = "blog-app-client"
-    read_attributes               = ["email", "email_verified", "phone_number"]
-    allowed_oauth_scopes          = ["email", "openid"]
-    callback_urls                 = ["https://cloud-interview.in/callback", "https://cloud-interview.in/anothercallback"]
-    default_redirect_uri          = "https://cloud-interview.in/callback"
-    generate_secret               = false
-    prevent_user_existence_errors = "ENABLED"
+    name                                 = "blog-app-client"
+    allowed_oauth_flows                  = ["code"]
+    allowed_oauth_flows_user_pool_client = true
+    allowed_oauth_scopes                 = ["email", "openid"]
+    callback_urls                        = ["https://cloud-interview.in/callback", "https://cloud-interview.in/anothercallback"]
+    default_redirect_uri                 = "https://cloud-interview.in/callback"
+    generate_secret                      = false
+    prevent_user_existence_errors        = "ENABLED"
+    read_attributes                      = ["email", "email_verified", "phone_number"]
     explicit_auth_flows = [
       "ALLOW_REFRESH_TOKEN_AUTH",
       "ALLOW_USER_PASSWORD_AUTH",
