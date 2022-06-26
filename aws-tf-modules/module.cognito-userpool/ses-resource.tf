@@ -53,6 +53,12 @@ resource "aws_ses_email_identity" "ses-domain" {
 
 resource "aws_s3_bucket" "emails_bucket" {
   bucket = "blog-api-ses-integration"
+
+  force_destroy = true
+
+  lifecycle {
+    prevent_destroy = false
+  }
 }
 
 resource "null_resource" "delay" {
