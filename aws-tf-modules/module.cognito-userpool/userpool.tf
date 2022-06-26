@@ -60,6 +60,10 @@ locals {
 }
 
 resource "aws_cognito_user_pool" "pool" {
+  depends_on = [
+    aws_route53_record.cognito_web_1,
+    aws_route53_record.cognito_web_2
+  ]
   count = var.enabled ? 1 : 0
 
   name                     = var.user_pool_name

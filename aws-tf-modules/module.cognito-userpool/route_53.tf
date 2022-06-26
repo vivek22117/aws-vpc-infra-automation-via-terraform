@@ -48,7 +48,6 @@ resource "aws_acm_certificate_validation" "cert" {
 }
 
 resource "aws_route53_record" "cognito_web_1" {
-  depends_on = [aws_cognito_user_pool.pool]
 
   zone_id = data.aws_route53_zone.cloud_interview.zone_id
   name    = "auth.cloud-interview.in"
@@ -63,7 +62,6 @@ resource "aws_route53_record" "cognito_web_1" {
 }
 
 resource "aws_route53_record" "cognito_web_2" {
-  depends_on = [aws_cognito_user_pool.pool]
 
   zone_id = data.aws_route53_zone.cloud_interview.zone_id
   name    = "www.auth.cloud-interview.in.in"

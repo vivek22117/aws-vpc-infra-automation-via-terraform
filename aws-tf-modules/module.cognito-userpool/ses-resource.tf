@@ -34,7 +34,7 @@ resource "aws_s3_bucket_policy" "bucket_policy" {
                 "Service": "ses.amazonaws.com"
             },
             "Action": "s3:PutObject",
-            "Resource": "arn:aws:s3:::gabriel.araujo-emails/*"
+            "Resource": "*"
         }
     ]
 }
