@@ -60,6 +60,7 @@ locals {
 }
 
 resource "aws_cognito_user_pool" "pool" {
+  count = var.enabled ? 1 : 0
 
   name                     = var.user_pool_name
   alias_attributes         = var.alias_attributes
