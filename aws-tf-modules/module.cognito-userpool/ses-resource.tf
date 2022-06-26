@@ -1,6 +1,29 @@
 //resource "aws_ses_domain_identity" "ses-domain" {
 //  domain = "cloud-interview.in"
 //}
+//
+//resource "aws_route53_record" "ses_verif" {
+//  zone_id = aws_route53_zone.zone.zone_id
+//  name    = "_amazonses.${aws_ses_domain_identity.primary.id}"
+//  type    = "TXT"
+//  ttl     = "600"
+//  records = [aws_ses_domain_identity.primary.verification_token]
+//}
+//
+//resource "aws_ses_domain_identity_verification" "ses_verif" {
+//  domain = aws_ses_domain_identity.primary.id
+//
+//  depends_on = [aws_route53_record.ses_verif]
+//}
+
+#In order for emails to work with our domain, we need an MX record that tells other mail servers where to send their @ourdomain emails.
+//resource "aws_route53_record" "email" {
+//  zone_id = aws_route53_zone.zone.zone_id
+//  name    = aws_route53_zone.zone.name
+//  type    = "MX"
+//  ttl     = "600"
+//  records = ["10 inbound-smtp.${data.aws_region.current.name}.amazonaws.com"]
+//}
 
 //# Example Route53 MX record
 //resource "aws_route53_record" "example_ses_domain_mail_from_mx" {
@@ -31,6 +54,7 @@ resource "aws_ses_email_identity" "ses-domain" {
 
 resource "aws_s3_bucket" "emails_bucket" {
   bucket = "blog-api-ses-integration"
+  acl    = "private"
 }
 
 resource "null_resource" "delay" {
@@ -56,7 +80,7 @@ resource "aws_s3_bucket_policy" "bucket_policy" {
                 "Service": "ses.amazonaws.com"
             },
             "Action": "s3:PutObject",
-            "Resource": "${aws_s3_bucket.emails_bucket.arn}/*"
+            "Resource": "${aws_s3_bucket.emails_bucket.arn}/incoming/*"
         }
     ]
 }
@@ -66,11 +90,21 @@ POLICY
   ]
 }
 
+resource "aws_ses_receipt_rule_set" "main" {
+  rule_set_name = "report-email-rules"
+}
+
+resource "aws_ses_active_receipt_rule_set" "main" {
+  rule_set_name = "report-email-rules"
+  depends_on    = [aws_ses_receipt_rule_set.main]
+}
+
+
 resource "aws_ses_receipt_rule" "store" {
   name          = "store"
-  rule_set_name = "default-rule-set"
+  rule_set_name = aws_ses_receipt_rule_set.main.rule_set_name
   enabled       = true
-  scan_enabled  = true
+  scan_enabled  = false
 
   add_header_action {
     header_name  = "Custom-Header"
@@ -80,7 +114,7 @@ resource "aws_ses_receipt_rule" "store" {
 
   s3_action {
     bucket_name       = aws_s3_bucket.emails_bucket.id
-    object_key_prefix = "incoming"
+    object_key_prefix = "incoming/"
     position          = 2
   }
 
