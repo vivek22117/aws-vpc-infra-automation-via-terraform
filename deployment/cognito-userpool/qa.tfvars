@@ -41,6 +41,13 @@ schemas = [
     mutable                  = true
     name                     = "approved"
     required                 = false
+  },
+  {
+    attribute_data_type      = "DateTime"
+    developer_only_attribute = false
+    mutable                  = false
+    name                     = "created"
+    required                 = false
   }
 ]
 
@@ -104,13 +111,6 @@ string_schemas = [
       min_length = 7
       max_length = 25
     }
-  },
-  {
-    attribute_data_type      = "DateTime"
-    developer_only_attribute = false
-    mutable                  = false
-    name                     = "created"
-    required                 = false
   }
 ]
 
