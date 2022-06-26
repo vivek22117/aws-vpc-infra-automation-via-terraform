@@ -53,7 +53,7 @@ resource "aws_route53_record" "cognito_web_1" {
   type    = "A"
 
   alias {
-    name = aws_cognito_user_pool_domain.user_pool_domain.cloudfront_distribution_arn
+    name = aws_cognito_user_pool_domain.user_pool_domain[0].cloudfront_distribution_arn
     # This zone_id is fixed
     zone_id                = "Z2FDTNDATAQYW2"
     evaluate_target_health = false
@@ -66,7 +66,7 @@ resource "aws_route53_record" "cognito_web_2" {
   type    = "A"
 
   alias {
-    name = aws_cognito_user_pool_domain.user_pool_domain.cloudfront_distribution_arn
+    name = aws_cognito_user_pool_domain.user_pool_domain[0].cloudfront_distribution_arn
     # This zone_id is fixed
     zone_id                = "Z2FDTNDATAQYW2"
     evaluate_target_health = false
