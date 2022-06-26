@@ -12,6 +12,8 @@ module "route53_config" {
 
 
 module "vpc" {
+  depends_on = [module.route53_config]
+
   source = "../../aws-tf-modules/module.cognito-userpool"
 
   default_region = var.default_region
