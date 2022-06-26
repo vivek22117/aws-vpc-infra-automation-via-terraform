@@ -28,7 +28,6 @@ admin_create_user_config = {
 email_configuration = {
   email_sending_account  = "DEVELOPER"
   reply_to_email_address = "admin@doubledigit-solutions.in"
-  from_email_address     = "admin@doubledigit-solutions.in"
 }
 
 schemas = [
@@ -133,7 +132,7 @@ password_policy = {
 }
 
 verification_message_template = {
-  default_email_option = "CONFIRM_WITH_LINK"
+  default_email_option = "CONFIRM_WITH_CODE"
 }
 
 user_pool_add_ons = {
