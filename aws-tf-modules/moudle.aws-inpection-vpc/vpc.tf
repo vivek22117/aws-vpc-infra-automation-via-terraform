@@ -43,12 +43,16 @@ resource "aws_subnet" "inspection_vpc_public_subnet" {
 //  }
 //}
 //
-//resource "aws_internet_gateway" "inspection_vpc_igw" {
-//  vpc_id = aws_vpc.inspection_vpc.id
-//  tags = {
-//    Name = "inspection-vpc/internet-gateway"
-//  }
-//}
+
+#######################################################
+# Enable access to or from the Internet for instances #
+# in public subnets using IGW                         #
+#######################################################
+resource "aws_internet_gateway" "inspection_vpc_igw" {
+  vpc_id = aws_vpc.inspection_vpc.id
+
+  tags = merge(local.common_tags, tomap({ "Name" = "inspection-vpc/igw" }))
+}
 //
 //resource "aws_eip" "inspection_vpc_nat_gw_eip" {
 //  count = length(data.aws_availability_zones.available.names)
