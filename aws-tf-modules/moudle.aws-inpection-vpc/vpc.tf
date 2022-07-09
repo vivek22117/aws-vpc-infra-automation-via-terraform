@@ -53,10 +53,24 @@ resource "aws_internet_gateway" "inspection_vpc_igw" {
 
   tags = merge(local.common_tags, tomap({ "Name" = "inspection-vpc/igw" }))
 }
-//
-//resource "aws_eip" "inspection_vpc_nat_gw_eip" {
-//  count = length(data.aws_availability_zones.available.names)
-//}
+
+######################################################
+# NAT gateways  enable instances in a private subnet #
+# to connect to the Internet or other AWS services,  #
+# but prevent the internet from initiating           #
+# a connection with those instances.                 #
+#                                                    #
+# Each NAT gateway requires an Elastic IP.           #
+######################################################
+resource "aws_eip" "inspection_vpc_nat_eip" {
+  depends_on = [aws_internet_gateway.inspection_vpc_igw]
+
+  vpc = true
+  tags = {
+    Name = "eip-${var.environment}-${aws_vpc.inspection_vpc.id}-${count.index}"
+  }
+}
+
 //
 //resource "aws_nat_gateway" "inspection_vpc_nat_gw" {
 //  count         = length(data.aws_availability_zones.available.names)
