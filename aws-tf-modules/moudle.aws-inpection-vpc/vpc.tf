@@ -71,14 +71,20 @@ resource "aws_eip" "inspection_vpc_nat_eip" {
   }
 }
 
-//
-//resource "aws_nat_gateway" "inspection_vpc_nat_gw" {
-//  count         = length(data.aws_availability_zones.available.names)
-//  depends_on    = [aws_internet_gateway.inspection_vpc_igw, aws_subnet.inspection_vpc_public_subnet]
-//  allocation_id = aws_eip.inspection_vpc_nat_gw_eip[count.index].id
-//  subnet_id     = aws_subnet.inspection_vpc_public_subnet[count.index].id
-//  tags = {
-//    Name = "inspection-vpc/${data.aws_availability_zones.available.names[count.index]}/nat-gateway"
-//  }
-//}
+#################################################
+#       Create NatGateway and allocate EIP      #
+#################################################
+resource "aws_nat_gateway" "inspection_vpc_nat_gw" {
+  depends_on = [aws_internet_gateway.inspection_vpc_igw, aws_subnet.inspection_vpc_public_subnet]
+
+  count = length(data.aws_availability_zones.available.names)
+
+  allocation_id = aws_eip.inspection_vpc_nat_eip.id
+  subnet_id     = aws_subnet.inspection_vpc_public_subnet[count.index].id
+
+  tags = {
+    Name = "inspection-vpc/${data.aws_availability_zones.available.names[count.index]}/nat-gateway"
+  }
+}
+
 
