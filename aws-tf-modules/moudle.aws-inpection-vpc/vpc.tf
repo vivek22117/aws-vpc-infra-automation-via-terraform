@@ -95,8 +95,7 @@ resource "aws_subnet" "inspection_vpc_tgw_subnet" {
   map_public_ip_on_launch = false
   vpc_id                  = aws_vpc.inspection_vpc.id
   availability_zone       = data.aws_availability_zones.available.names[count.index]
-  cidr_block              = cidrsubnet(local.inspection_vpc_cidr, 8, 30 + count.index)
-  tags = {
-    Name = "inspection-vpc/${data.aws_availability_zones.available.names[count.index]}/tgw-subnet"
-  }
+  cidr_block              = cidrsubnet(var.cidr_block, 8, 30 + count.index)
+
+  tags = merge(local.common_tags, tomap({ "Name" = "inspection-vpc/${data.aws_availability_zones.available.names[count.index]}/tgw-subnet" }))
 }
