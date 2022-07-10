@@ -26,6 +26,11 @@ variable "support_dns" {
   description = "To use private DNS support within the VPC"
 }
 
+variable "enable_nat_gateway" {
+  type        = string
+  description = "want to create nat-gateway or not"
+}
+
 ######################################################
 # Local variables defined                            #
 ######################################################

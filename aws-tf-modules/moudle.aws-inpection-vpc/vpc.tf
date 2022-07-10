@@ -65,7 +65,8 @@ resource "aws_internet_gateway" "inspection_vpc_igw" {
 resource "aws_eip" "inspection_vpc_nat_eip" {
   depends_on = [aws_internet_gateway.inspection_vpc_igw]
 
-  vpc = true
+  count = var.enable_nat_gateway == "true" ? 1 : 0
+  vpc   = true
   tags = {
     Name = "eip-${var.environment}-${aws_vpc.inspection_vpc.id}-${count.index}"
   }
@@ -79,7 +80,7 @@ resource "aws_nat_gateway" "inspection_vpc_nat_gw" {
 
   count = length(data.aws_availability_zones.available.names)
 
-  allocation_id = aws_eip.inspection_vpc_nat_eip.id
+  allocation_id = aws_eip.inspection_vpc_nat_eip.*.id[count.index]
   subnet_id     = aws_subnet.inspection_vpc_public_subnet[count.index].id
 
   tags = {
