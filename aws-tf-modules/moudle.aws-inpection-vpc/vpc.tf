@@ -31,18 +31,18 @@ resource "aws_subnet" "inspection_vpc_public_subnet" {
   tags = merge(local.common_tags, tomap({ "Name" = "inspection-vpc/${data.aws_availability_zones.available.names[count.index]}/public-subnet" }))
 }
 
-//
-//resource "aws_subnet" "inspection_vpc_firewall_subnet" {
-//  count                   = length(data.aws_availability_zones.available.names)
-//  map_public_ip_on_launch = false
-//  vpc_id                  = aws_vpc.inspection_vpc.id
-//  availability_zone       = data.aws_availability_zones.available.names[count.index]
-//  cidr_block              = cidrsubnet(local.inspection_vpc_cidr, 8, 20 + count.index)
-//  tags = {
-//    Name = "inspection-vpc/${data.aws_availability_zones.available.names[count.index]}/firewall-subnet"
-//  }
-//}
-//
+
+resource "aws_subnet" "inspection_vpc_firewall_subnet" {
+  count = length(data.aws_availability_zones.available.names)
+
+  map_public_ip_on_launch = false
+  vpc_id                  = aws_vpc.inspection_vpc.id
+  availability_zone       = data.aws_availability_zones.available.names[count.index]
+  cidr_block              = cidrsubnet(var.cidr_block, 8, 20 + count.index)
+
+  tags = merge(local.common_tags, tomap({ "Name" = "inspection-vpc/${data.aws_availability_zones.available.names[count.index]}/firewall-subnet" }))
+}
+
 
 #######################################################
 # Enable access to or from the Internet for instances #
@@ -89,3 +89,14 @@ resource "aws_nat_gateway" "inspection_vpc_nat_gw" {
 }
 
 
+resource "aws_subnet" "inspection_vpc_tgw_subnet" {
+  count = length(data.aws_availability_zones.available.names)
+
+  map_public_ip_on_launch = false
+  vpc_id                  = aws_vpc.inspection_vpc.id
+  availability_zone       = data.aws_availability_zones.available.names[count.index]
+  cidr_block              = cidrsubnet(local.inspection_vpc_cidr, 8, 30 + count.index)
+  tags = {
+    Name = "inspection-vpc/${data.aws_availability_zones.available.names[count.index]}/tgw-subnet"
+  }
+}
