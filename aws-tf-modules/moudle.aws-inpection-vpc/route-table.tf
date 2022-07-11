@@ -1,0 +1,20 @@
+resource "aws_route_table" "inspection_vpc_tgw_subnet_route_table" {
+  count = length(data.aws_availability_zones.available.names)
+
+  vpc_id = aws_vpc.inspection_vpc.id
+  route {
+    cidr_block = "0.0.0.0/0"
+    # https://github.com/hashicorp/terraform-provider-aws/issues/16759
+    vpc_endpoint_id = element([for ss in tolist(aws_networkfirewall_firewall.inspection_vpc_nt_firewall.firewall_status.sync_states) : ss.attachment[0].endpoint_id if ss.attachment[0].subnet_id == aws_subnet.inspection_vpc_firewall_subnet[count.index].id], 0)
+  }
+  tags = {
+    Name = "inspection-vpc/${data.aws_availability_zones.available.names[count.index]}/tgw-subnet-route-table"
+  }
+}
+
+resource "aws_route_table_association" "inspection_vpc_tgw_subnet_route_table_association" {
+  count = length(data.aws_availability_zones.available.names)
+
+  route_table_id = aws_route_table.inspection_vpc_tgw_subnet_route_table[count.index].id
+  subnet_id      = aws_subnet.inspection_vpc_tgw_subnet[count.index].id
+}
