@@ -59,6 +59,30 @@ variable "project" {
   description = "Monitoring is enabled or disabled for the resources creating"
 }
 
+#####============================Firewall variables==============================#####
+variable "delete_protection" {
+  type        = bool
+  description = "A boolean flag indicating whether it is possible to delete the firewall."
+  default     = false
+}
+
+variable "firewall_policy_change_protection" {
+  type        = bool
+  description = "A boolean flag indicating whether it is possible to change the associated firewall policy."
+  default     = false
+}
+
+variable "subnet_change_protection" {
+  type        = bool
+  description = "A boolean flag indicating whether it is possible to change the associated subnet(s)."
+  default     = false
+}
+
+variable "create_network_firewall" {
+  type        = bool
+  description = "Set to false if you just want to create the security policy, stateless and stateful rules"
+  default     = true
+}
 
 #####=============Local variables===============#####
 locals {
