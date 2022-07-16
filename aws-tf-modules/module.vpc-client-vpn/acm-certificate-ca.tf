@@ -1,8 +1,11 @@
+####################################################
+#           AWS ACM Certificate for CA             #
+####################################################
 resource "tls_private_key" "ca" {
   algorithm = "RSA"
 }
 
-resource "tls_self_signed_cert" "ca_cert" {
+resource "tls_self_signed_cert" "ca" {
   key_algorithm   = "RSA"
   private_key_pem = tls_private_key.ca.private_key_pem
 
@@ -16,4 +19,13 @@ resource "tls_self_signed_cert" "ca_cert" {
     "cert_signing",
     "crl_signing",
   ]
+}
+
+resource "aws_acm_certificate" "ca_cert" {
+  private_key      = tls_private_key.ca.private_key_pem
+  certificate_body = tls_self_signed_cert.ca.cert_pem
+  tags = {
+    Terraform   = "true"
+    Environment = var.environment
+  }
 }
