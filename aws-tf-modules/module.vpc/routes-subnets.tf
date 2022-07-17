@@ -4,7 +4,7 @@ locals {
   list_of_azs = data.aws_availability_zones.available.names
 
   total_azs = length(data.aws_availability_zones.available.names)
-  used_azs = local.total_azs > 3 ? 3 : local.total_azs
+  used_azs  = local.total_azs > 3 ? 3 : local.total_azs
 }
 
 ######################################################
@@ -49,11 +49,11 @@ resource "aws_nat_gateway" "nat_gateway" {
 # to the Internet                                    #
 ######################################################
 resource "aws_route_table" "private" {
-  count  = local.used_azs
+  count = local.used_azs
 
   vpc_id = aws_vpc.vpc.id
 
-  tags = merge(local.common_tags, tomap({"Name"= "private-route-${var.environment}-${aws_vpc.vpc.id}-${count.index}"}))
+  tags = merge(local.common_tags, tomap({ "Name" = "private-route-${var.environment}-${aws_vpc.vpc.id}-${count.index}" }))
 }
 
 resource "aws_route" "private_nat_gateway" {
@@ -84,7 +84,7 @@ resource "aws_route_table" "public" {
     gateway_id = aws_internet_gateway.vpc_igw.id
   }
 
-  tags = merge(local.common_tags, tomap({"Name"= "public-route-${var.environment}-${aws_vpc.vpc.id}"}))
+  tags = merge(local.common_tags, tomap({ "Name" = "public-route-${var.environment}-${aws_vpc.vpc.id}" }))
 }
 
 resource "aws_route_table_association" "public_association" {
@@ -107,7 +107,7 @@ resource "aws_subnet" "public" {
   availability_zone       = local.list_of_azs[count.index]
   map_public_ip_on_launch = true
 
-  tags = merge(local.common_tags, tomap({"Name"= "publicSubnet-${var.environment}-${element(local.list_of_azs, count.index)}"}))
+  tags = merge(local.common_tags, tomap({ "Name" = "publicSubnet-${var.environment}-${element(local.list_of_azs, count.index)}" }))
 }
 
 
@@ -123,7 +123,7 @@ resource "aws_subnet" "private" {
   availability_zone       = local.list_of_azs[count.index]
   map_public_ip_on_launch = false
 
-  tags = merge(local.common_tags, tomap({"Name"= "privateSubnet-${var.environment}-${element(local.list_of_azs, count.index)}"}))
+  tags = merge(local.common_tags, tomap({ "Name" = "privateSubnet-${var.environment}-${element(local.list_of_azs, count.index)}" }))
 }
 
 
@@ -139,7 +139,7 @@ resource "aws_subnet" "db_subnets_private" {
   availability_zone       = local.list_of_azs[count.index]
   map_public_ip_on_launch = false
 
-  tags = merge(local.common_tags, tomap({"Name"= "db_subnet-${var.environment}-${element(local.list_of_azs, count.index)}"}))
+  tags = merge(local.common_tags, tomap({ "Name" = "db_subnet-${var.environment}-${element(local.list_of_azs, count.index)}" }))
 }
 
 ######################################################
@@ -154,6 +154,21 @@ resource "aws_subnet" "vault_consul_subnets_private" {
   availability_zone       = local.list_of_azs[count.index]
   map_public_ip_on_launch = false
 
-  tags = merge(local.common_tags, tomap({"Name"= "vault_consul_subnet-${var.environment}-${element(local.list_of_azs, count.index)}"}))
+  tags = merge(local.common_tags, tomap({ "Name" = "vault_consul_subnet-${var.environment}-${element(local.list_of_azs, count.index)}" }))
 }
+
+######################################################
+# Private subnets for TGW Attachment                 #
+######################################################
+resource "aws_subnet" "tgw_subnets_private" {
+  count = local.used_azs
+
+  cidr_block              = var.vault_consul_azs_with_cidr[count.index]
+  vpc_id                  = aws_vpc.vpc.id
+  availability_zone       = local.list_of_azs[count.index]
+  map_public_ip_on_launch = false
+
+  tags = merge(local.common_tags, tomap({ "Name" = "vault_consul_subnet-${var.environment}-${element(local.list_of_azs, count.index)}" }))
+}
+
 
