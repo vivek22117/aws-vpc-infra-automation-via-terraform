@@ -29,3 +29,29 @@ resource "aws_acm_certificate" "ca_cert" {
     Environment = var.environment
   }
 }
+
+
+############################################################
+#           Add private Key and CA cert in SSM             #
+############################################################
+resource "aws_ssm_parameter" "vpn_ca_key" {
+  name        = "/${var.project}/${var.environment}/acm/vpn/ca_key"
+  description = "VPN CA key"
+  type        = "SecureString"
+  value       = tls_private_key.ca.private_key_pem
+
+  tags = {
+    Terraform   = "true"
+    Environment = var.environment
+  }
+}
+resource "aws_ssm_parameter" "vpn_ca_cert" {
+  name        = "/${var.project}/${var.environment}/acm/vpn/ca_cert"
+  description = "VPN CA cert"
+  type        = "SecureString"
+  value       = tls_self_signed_cert.ca.cert_pem
+  tags = {
+    Terraform   = "true"
+    Environment = var.environment
+  }
+}
