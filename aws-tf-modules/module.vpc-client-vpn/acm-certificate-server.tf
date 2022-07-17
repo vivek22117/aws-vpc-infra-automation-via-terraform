@@ -26,3 +26,32 @@ resource "tls_locally_signed_cert" "server" {
     "server_auth",
   ]
 }
+
+resource "aws_acm_certificate" "server_cert" {
+  private_key       = tls_private_key.server.private_key_pem
+  certificate_body  = tls_locally_signed_cert.server.cert_pem
+  certificate_chain = tls_self_signed_cert.ca.cert_pem
+
+  tags = merge(local.common_tags, tomap({ "Name" = "vpn-server-cert" }))
+
+}
+
+
+resource "aws_ssm_parameter" "vpn_server_key" {
+  name        = "/${var.project}/${var.environment}/acm/vpn/server_key"
+  description = "VPN server key"
+  type        = "SecureString"
+  value       = tls_private_key.server.private_key_pem
+
+  tags = merge(local.common_tags, tomap({ "Name" = "server-cert" }))
+
+}
+resource "aws_ssm_parameter" "vpn_server_cert" {
+  name        = "/${var.project}/${var.environment}/acm/vpn/server_cert"
+  description = "VPN server cert"
+  type        = "SecureString"
+  value       = tls_locally_signed_cert.server.cert_pem
+
+  tags = merge(local.common_tags, tomap({ "Name" = "server-cert" }))
+
+}
