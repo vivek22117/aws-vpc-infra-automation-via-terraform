@@ -18,6 +18,10 @@ output "vault_license_s3_arn" {
   value = aws_s3_bucket.s3_bucket["vault_licensing"].arn
 }
 
+output "firewall_logs_s3_arn" {
+  value = aws_s3_bucket.s3_bucket["firewall_flow_logs"].arn
+}
+
 output "artifactory_s3_name" {
   value = aws_s3_bucket.s3_bucket["artifactory_bucket"].id
 }
@@ -36,4 +40,8 @@ output "cloudtrail_s3_name" {
 
 output "vault_license_s3_name" {
   value = aws_s3_bucket.s3_bucket["vault_licensing"].id
+}
+
+output "firewall_logs_s3_name" {
+  value = aws_s3_bucket.s3_bucket["firewall_flow_logs"].id
 }
