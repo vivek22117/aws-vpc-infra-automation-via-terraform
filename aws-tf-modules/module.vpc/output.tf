@@ -26,6 +26,10 @@ output "vault_consul_subnets" {
   value = aws_subnet.vault_consul_subnets_private.*.id
 }
 
+output "tgw_subnets" {
+  value = aws_subnet.tgw_subnets_private.*.id
+}
+
 output "db_cidrs" {
   value = aws_subnet.db_subnets_private.*.cidr_block
 }

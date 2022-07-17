@@ -26,6 +26,10 @@ output "vault_consul_subnets" {
   value = module.vpc.vault_consul_subnets
 }
 
+output "tgw_subnets" {
+  value = module.vpc.tgw_subnets
+}
+
 output "db_cidrs" {
   value = module.vpc.db_cidrs
 }
