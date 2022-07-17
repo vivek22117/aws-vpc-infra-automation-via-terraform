@@ -24,10 +24,9 @@ resource "tls_self_signed_cert" "ca" {
 resource "aws_acm_certificate" "ca_cert" {
   private_key      = tls_private_key.ca.private_key_pem
   certificate_body = tls_self_signed_cert.ca.cert_pem
-  tags = {
-    Terraform   = "true"
-    Environment = var.environment
-  }
+
+  tags = merge(local.common_tags, tomap({ "Name" = "vpn-ca-cert" }))
+
 }
 
 
@@ -40,18 +39,14 @@ resource "aws_ssm_parameter" "vpn_ca_key" {
   type        = "SecureString"
   value       = tls_private_key.ca.private_key_pem
 
-  tags = {
-    Terraform   = "true"
-    Environment = var.environment
-  }
+  tags = merge(local.common_tags, tomap({ "Name" = "ca-key" }))
 }
 resource "aws_ssm_parameter" "vpn_ca_cert" {
   name        = "/${var.project}/${var.environment}/acm/vpn/ca_cert"
   description = "VPN CA cert"
   type        = "SecureString"
   value       = tls_self_signed_cert.ca.cert_pem
-  tags = {
-    Terraform   = "true"
-    Environment = var.environment
-  }
+
+  tags = merge(local.common_tags, tomap({ "Name" = "ca-cert" }))
+
 }
