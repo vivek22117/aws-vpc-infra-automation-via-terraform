@@ -1,5 +1,5 @@
 resource "aws_networkfirewall_firewall" "inspection_vpc_nt_firewall" {
-  name        = "DD-Network-Firewall"
+  name        = "DD-Inspection-Network-Firewall"
   description = "AWS Network Firewall for DD environment"
 
   vpc_id                            = aws_vpc.inspection_vpc.id
