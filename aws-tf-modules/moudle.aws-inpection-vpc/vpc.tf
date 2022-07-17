@@ -4,7 +4,7 @@ locals {
   list_of_azs = data.aws_availability_zones.available.names
 
   total_azs = length(data.aws_availability_zones.available.names)
-  used_azs  = local.total_azs > 3 ? 3 : local.total_azs
+  used_azs  = local.total_azs > 2 ? 2 : local.total_azs
 }
 
 #################################################
@@ -21,7 +21,7 @@ resource "aws_vpc" "inspection_vpc" {
 }
 
 resource "aws_subnet" "inspection_vpc_public_subnet" {
-  count = length(data.aws_availability_zones.available.names)
+  count = local.used_azs
 
   map_public_ip_on_launch = true
   vpc_id                  = aws_vpc.inspection_vpc.id
@@ -33,7 +33,7 @@ resource "aws_subnet" "inspection_vpc_public_subnet" {
 
 
 resource "aws_subnet" "inspection_vpc_firewall_subnet" {
-  count = length(data.aws_availability_zones.available.names)
+  count = local.used_azs
 
   map_public_ip_on_launch = false
   vpc_id                  = aws_vpc.inspection_vpc.id
@@ -65,7 +65,7 @@ resource "aws_internet_gateway" "inspection_vpc_igw" {
 resource "aws_eip" "inspection_vpc_nat_eip" {
   depends_on = [aws_internet_gateway.inspection_vpc_igw]
 
-  count = var.enable_nat_gateway == "true" ? 1 : 0
+  count = local.used_azs
   vpc   = true
   tags = {
     Name = "eip-${var.environment}-${aws_vpc.inspection_vpc.id}-${count.index}"
@@ -78,7 +78,7 @@ resource "aws_eip" "inspection_vpc_nat_eip" {
 resource "aws_nat_gateway" "inspection_vpc_nat_gw" {
   depends_on = [aws_internet_gateway.inspection_vpc_igw, aws_subnet.inspection_vpc_public_subnet]
 
-  count = length(data.aws_availability_zones.available.names)
+  count = local.used_azs
 
   allocation_id = aws_eip.inspection_vpc_nat_eip.*.id[count.index]
   subnet_id     = aws_subnet.inspection_vpc_public_subnet[count.index].id
@@ -90,7 +90,7 @@ resource "aws_nat_gateway" "inspection_vpc_nat_gw" {
 
 
 resource "aws_subnet" "inspection_vpc_tgw_subnet" {
-  count = length(data.aws_availability_zones.available.names)
+  count = local.used_azs
 
   map_public_ip_on_launch = false
   vpc_id                  = aws_vpc.inspection_vpc.id
