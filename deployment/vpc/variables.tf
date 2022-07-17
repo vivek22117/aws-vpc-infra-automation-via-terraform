@@ -46,6 +46,11 @@ variable "vault_consul_azs_with_cidr" {
   description = "Name of azs with cidr to be used for Vault & Consul infra"
 }
 
+variable "tgw_azs_with_cidr" {
+  type        = list(string)
+  description = "Name of azs with cidr to be used for Transit Gateway infra"
+}
+
 variable "enable_nat_gateway" {
   type        = string
   description = "want to create nat-gateway or not"
@@ -63,7 +68,7 @@ variable "public_key" {
 }
 
 variable "ami_filter_type" {
-  type = string
+  type        = string
   description = "AMI filter type, valid values 'self', 'amazon'"
 }
 
