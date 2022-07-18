@@ -1,35 +1,36 @@
-resource "aws_ec2_transit_gateway" "tgw" {
-  tags = {
-    Name = "transit-gateway"
-  }
+resource "aws_ec2_transit_gateway" "dd_tgw" {
+  description = "AWS VPC transit gateway to site-to-site VPN connectivity"
+
+  amazon_side_asn                 = "64512"
+  auto_accept_shared_attachments  = "disable"
+  default_route_table_association = "enable"
+  default_route_table_propagation = "enable"
+  dns_support                     = "enable"
+  vpn_ecmp_support                = "enable"
+
+  tags = merge(local.common_tags, tomap({ "Name" = "inspection-vpc/tgw" }))
+
 }
 
-resource "aws_ec2_transit_gateway_route_table" "spoke_route_table" {
-  transit_gateway_id = aws_ec2_transit_gateway.tgw.id
-  tags = {
-    Name = "spoke-route-table"
-  }
+resource "aws_ec2_transit_gateway_route_table" "tgw_route_table" {
+  transit_gateway_id = aws_ec2_transit_gateway.dd_tgw.id
+
+  tags = merge(local.common_tags, tomap({ "Name" = "inspection-vpc/tgw-route-table" }))
 }
-
-
 
 resource "aws_ec2_transit_gateway_route_table" "inspection_route_table" {
-  transit_gateway_id = aws_ec2_transit_gateway.tgw.id
-  tags = {
-    Name = "inspection-route-table"
-  }
+  transit_gateway_id = aws_ec2_transit_gateway.dd_tgw.id
+
+  tags = merge(local.common_tags, tomap({ "Name" = "inspection-vpc/inspection-route-table" }))
 }
 
-
-resource "aws_ec2_transit_gateway_vpc_attachment" "spoke_vpc_a_tgw_attachment" {
-  transit_gateway_id                              = aws_ec2_transit_gateway.tgw.id
-  subnet_ids                                      = data.terraform_remote_state.vpc.outputs.private_subnets
+resource "aws_ec2_transit_gateway_vpc_attachment" "app_vpc_tgw_attachment" {
+  transit_gateway_id                              = aws_ec2_transit_gateway.dd_tgw.id
+  subnet_ids                                      = data.terraform_remote_state.vpc.outputs.tgw_subnets
   vpc_id                                          = data.terraform_remote_state.vpc.outputs.vpc_id
   transit_gateway_default_route_table_association = false
 
-  tags = {
-    Name = "spoke-vpc-a-attachment"
-  }
+  tags = merge(local.common_tags, tomap({ "Name" = "inspection-vpc/app_vpc_tgw_attachment" }))
 }
 
 resource "aws_ec2_transit_gateway_route_table_association" "spoke_vpc_a_tgw_attachment_rt_association" {
