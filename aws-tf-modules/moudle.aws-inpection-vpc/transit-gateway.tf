@@ -33,9 +33,20 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "app_vpc_tgw_attachment" {
   tags = merge(local.common_tags, tomap({ "Name" = "inspection-vpc/app_vpc_tgw_attachment" }))
 }
 
-resource "aws_ec2_transit_gateway_route_table_association" "spoke_vpc_a_tgw_attachment_rt_association" {
+resource "aws_ec2_transit_gateway_route_table_association" "app_vpc_tgw_attachment_rt_association" {
   transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.app_vpc_tgw_attachment.id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.inspection_route_table.id
+}
+
+resource "aws_ec2_transit_gateway_vpc_attachment" "inspection_vpc_tgw_attachment" {
+  subnet_ids                                      = aws_subnet.inspection_vpc_tgw_subnet[*].id
+  transit_gateway_id                              = aws_ec2_transit_gateway.dd_tgw.id
+  vpc_id                                          = aws_vpc.inspection_vpc.id
+  transit_gateway_default_route_table_association = false
+
+  appliance_mode_support = "enable"
+
+  tags = merge(local.common_tags, tomap({ "Name" = "inspection-vpc/tgw_inspection_vpc_attachment" }))
 }
 
 //
