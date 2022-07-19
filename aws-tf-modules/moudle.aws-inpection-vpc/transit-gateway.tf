@@ -12,16 +12,16 @@ resource "aws_ec2_transit_gateway" "dd_tgw" {
 
 }
 
-resource "aws_ec2_transit_gateway_route_table" "tgw_route_table" {
+resource "aws_ec2_transit_gateway_route_table" "app_vpc_route_table" {
   transit_gateway_id = aws_ec2_transit_gateway.dd_tgw.id
 
-  tags = merge(local.common_tags, tomap({ "Name" = "inspection-vpc/tgw-route-table" }))
+  tags = merge(local.common_tags, tomap({ "Name" = "inspection-vpc/app-vpc-route-table" }))
 }
 
-resource "aws_ec2_transit_gateway_route_table" "inspection_route_table" {
+resource "aws_ec2_transit_gateway_route_table" "inspection_vpc_route_table" {
   transit_gateway_id = aws_ec2_transit_gateway.dd_tgw.id
 
-  tags = merge(local.common_tags, tomap({ "Name" = "inspection-vpc/inspection-route-table" }))
+  tags = merge(local.common_tags, tomap({ "Name" = "inspection-vpc/inspection-vpc-route-table" }))
 }
 
 resource "aws_ec2_transit_gateway_vpc_attachment" "app_vpc_tgw_attachment" {
@@ -35,7 +35,7 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "app_vpc_tgw_attachment" {
 
 resource "aws_ec2_transit_gateway_route_table_association" "app_vpc_tgw_attachment_rt_association" {
   transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.app_vpc_tgw_attachment.id
-  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.inspection_route_table.id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.app_vpc_route_table.id
 }
 
 resource "aws_ec2_transit_gateway_vpc_attachment" "inspection_vpc_tgw_attachment" {
@@ -47,6 +47,17 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "inspection_vpc_tgw_attachment
   appliance_mode_support = "enable"
 
   tags = merge(local.common_tags, tomap({ "Name" = "inspection-vpc/tgw_inspection_vpc_attachment" }))
+}
+
+resource "aws_ec2_transit_gateway_route" "app_vpc_route_table_default_route" {
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.inspection_vpc_tgw_attachment.id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.app_vpc_route_table.id
+  destination_cidr_block         = "0.0.0.0/0"
+}
+
+resource "aws_ec2_transit_gateway_route_table_association" "inspection_vpc_tgw_attachment_rt_association" {
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.inspection_vpc_tgw_attachment.id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.inspection_vpc_route_table.id
 }
 
 //
