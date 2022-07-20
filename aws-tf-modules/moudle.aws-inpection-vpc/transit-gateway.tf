@@ -60,3 +60,12 @@ resource "aws_ec2_transit_gateway_route_table_association" "inspection_vpc_tgw_a
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.inspection_vpc_route_table.id
 }
 
+resource "aws_ec2_transit_gateway_route_table_propagation" "inspection_route_table_propagate_app_vpc" {
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.app_vpc_tgw_attachment.id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.inspection_vpc_route_table.id
+}
+
+resource "aws_ec2_transit_gateway_route_table_propagation" "app_route_table_propagate_inspection_vpc" {
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.inspection_vpc_tgw_attachment.id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.app_vpc_route_table.id
+}
