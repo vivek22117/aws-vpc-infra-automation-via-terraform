@@ -9,31 +9,26 @@ variable "default_region" {
 variable "cidr_block" {
   type        = string
   description = "CIDR range for vpc"
-  default     = "10.0.0.0/16"
 }
 
 variable "instance_tenancy" {
   type        = string
   description = "Type of instance tenancy required default/dedicated"
-  default     = "default"
 }
 
 variable "enable_dns" {
   type        = string
   description = "To use private DNS within the VPC"
-  default     = true
 }
 
 variable "support_dns" {
   type        = string
   description = "To use private DNS support within the VPC"
-  default     = true
 }
 
 variable "enable_nat_gateway" {
   type        = string
   description = "want to create nat-gateway or not"
-  default     = true
 }
 
 ######################################################
