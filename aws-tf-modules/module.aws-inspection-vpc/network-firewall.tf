@@ -1,27 +1,6 @@
-resource "aws_networkfirewall_firewall" "inspection_vpc_nt_firewall" {
-  name        = "DD-Inspection-Network-Firewall"
-  description = "AWS Network Firewall for DD environment"
-
-  vpc_id                            = aws_vpc.inspection_vpc.id
-  delete_protection                 = var.delete_protection
-  firewall_policy_change_protection = var.firewall_policy_change_protection
-  subnet_change_protection          = var.subnet_change_protection
-  firewall_policy_arn               = aws_networkfirewall_firewall_policy.firewall_policy.arn
-
-  dynamic "subnet_mapping" {
-    for_each = aws_subnet.inspection_vpc_firewall_subnet[*].id
-
-    content {
-      subnet_id = subnet_mapping.value
-    }
-  }
-
-  tags = merge(local.common_tags, tomap({ "Name" = "inspection-vpc/${data.aws_availability_zones.available.names[count.index]}/nt-firewall" }))
-
-}
-
 resource "aws_cloudwatch_log_group" "firewall_alert_log_group" {
-  name = "/aws/network-firewall/alert"
+  name              = "/aws/network-firewall/alert"
+  retention_in_days = var.log_retention
 }
 
 resource "random_string" "bucket_random_id" {
@@ -199,4 +178,25 @@ resource "aws_networkfirewall_rule_group" "allow_domains" {
       }
     }
   }
+}
+
+resource "aws_networkfirewall_firewall" "inspection_vpc_nt_firewall" {
+  name        = "DD-Inspection-Network-Firewall"
+  description = "AWS Network Firewall for DD environment"
+
+  vpc_id                            = aws_vpc.inspection_vpc.id
+  delete_protection                 = var.delete_protection
+  firewall_policy_change_protection = var.firewall_policy_change_protection
+  subnet_change_protection          = var.subnet_change_protection
+  firewall_policy_arn               = aws_networkfirewall_firewall_policy.firewall_policy.arn
+
+  dynamic "subnet_mapping" {
+    for_each = aws_subnet.inspection_vpc_firewall_subnet[*].id
+
+    content {
+      subnet_id = subnet_mapping.value
+    }
+  }
+
+  tags = merge(local.common_tags, tomap({ "Name" = "inspection-vpc/${data.aws_availability_zones.available.names[count.index]}/nt-firewall" }))
 }

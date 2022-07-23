@@ -11,6 +11,7 @@ enable_dns       = true
 support_dns      = true
 
 enable_nat_gateway = true
+log_retention      = 90
 
 delete_protection                 = false
 firewall_policy_change_protection = false

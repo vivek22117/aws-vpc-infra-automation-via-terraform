@@ -31,6 +31,11 @@ variable "enable_nat_gateway" {
   description = "want to create nat-gateway or not"
 }
 
+variable "log_retention" {
+  type        = number
+  description = "Number of days logs will be kept in Cloudwatch log group"
+}
+
 ######################################################
 # Local variables defined                            #
 ######################################################

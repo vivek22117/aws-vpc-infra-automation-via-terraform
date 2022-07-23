@@ -17,6 +17,7 @@ module "inspection_vpc" {
   delete_protection                 = var.delete_protection
   enable_dns                        = var.enable_dns
   enable_nat_gateway                = var.enable_nat_gateway
+  log_retention                     = var.log_retention
   firewall_policy_change_protection = var.firewall_policy_change_protection
   instance_tenancy                  = var.instance_tenancy
   subnet_change_protection          = var.subnet_change_protection
