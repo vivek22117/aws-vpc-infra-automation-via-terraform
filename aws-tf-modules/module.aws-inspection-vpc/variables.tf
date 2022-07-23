@@ -9,31 +9,26 @@ variable "default_region" {
 variable "cidr_block" {
   type        = string
   description = "CIDR range for vpc"
-  default     = "10.0.0.0/16"
 }
 
 variable "instance_tenancy" {
   type        = string
   description = "Type of instance tenancy required default/dedicated"
-  default     = "default"
 }
 
 variable "enable_dns" {
   type        = string
   description = "To use private DNS within the VPC"
-  default     = true
 }
 
 variable "support_dns" {
   type        = string
   description = "To use private DNS support within the VPC"
-  default     = true
 }
 
 variable "enable_nat_gateway" {
   type        = string
   description = "want to create nat-gateway or not"
-  default     = true
 }
 
 ######################################################
@@ -68,25 +63,21 @@ variable "project" {
 variable "delete_protection" {
   type        = bool
   description = "A boolean flag indicating whether it is possible to delete the firewall."
-  default     = false
 }
 
 variable "firewall_policy_change_protection" {
   type        = bool
   description = "A boolean flag indicating whether it is possible to change the associated firewall policy."
-  default     = false
 }
 
 variable "subnet_change_protection" {
   type        = bool
   description = "A boolean flag indicating whether it is possible to change the associated subnet(s)."
-  default     = false
 }
 
 variable "create_network_firewall" {
   type        = bool
   description = "Set to false if you just want to create the security policy, stateless and stateful rules"
-  default     = true
 }
 
 #####=============Local variables===============#####
