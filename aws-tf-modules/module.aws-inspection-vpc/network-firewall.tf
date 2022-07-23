@@ -3,37 +3,6 @@ resource "aws_cloudwatch_log_group" "firewall_alert_log_group" {
   retention_in_days = var.log_retention
 }
 
-resource "random_string" "bucket_random_id" {
-  length  = 5
-  special = false
-  upper   = false
-}
-
-resource "aws_s3_bucket" "firewall_flow_bucket" {
-  bucket        = "network-firewall-flow-bucket-${random_string.bucket_random_id.id}"
-  acl           = "private"
-  force_destroy = true
-
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
-      }
-    }
-  }
-  versioning {
-    enabled = true
-  }
-}
-
-resource "aws_s3_bucket_public_access_block" "firewall_flow_bucket_public_access_block" {
-  bucket = aws_s3_bucket.firewall_flow_bucket.id
-
-  block_public_acls       = true
-  block_public_policy     = true
-  ignore_public_acls      = true
-  restrict_public_buckets = true
-}
 
 resource "aws_networkfirewall_logging_configuration" "firewall_alert_logging_configuration" {
   firewall_arn = aws_networkfirewall_firewall.inspection_vpc_nt_firewall.arn
@@ -48,7 +17,7 @@ resource "aws_networkfirewall_logging_configuration" "firewall_alert_logging_con
     }
     log_destination_config {
       log_destination = {
-        bucketName = aws_s3_bucket.firewall_flow_bucket.bucket
+        bucketName = data.terraform_remote_state.s3.outputs.firewall_logs_s3_name
       }
       log_destination_type = "S3"
       log_type             = "FLOW"
@@ -137,7 +106,7 @@ resource "aws_networkfirewall_rule_group" "block_domains" {
       ip_sets {
         key = "HOME_NET"
         ip_set {
-          definition = ["10.0.0.0/16", "10.1.0.0/16", "192.0.2.0/24"]
+          definition = ["10.0.0.0/16"]
         }
       }
     }
@@ -160,7 +129,7 @@ resource "aws_networkfirewall_rule_group" "allow_domains" {
       ip_sets {
         key = "WEBSERVERS_HOSTS"
         ip_set {
-          definition = ["10.0.1.0/24", "192.168.0.0/16"]
+          definition = ["10.0.1.0/24"]
         }
       }
       port_sets {
