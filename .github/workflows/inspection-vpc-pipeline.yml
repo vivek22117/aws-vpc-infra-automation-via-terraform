@@ -17,13 +17,13 @@ on:
 
 env:
   tf_version: '0.13.5'
-  tf_working_dir_app: './deployment/vpc/'
+  tf_working_dir_app: './deployment/inspection-vpc/'
   aws_region: 'us-east-1'
   environment: ${{ github.event.inputs.env }}
 
 jobs:
   terraform:
-    name: 'VPC-Resources-Deployment-Pipeline-${{ github.event.inputs.action }}'
+    name: 'Inspection-VPC-Pipeline-${{ github.event.inputs.action }}'
     runs-on: ubuntu-latest
 
     defaults:
@@ -61,7 +61,7 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
 
-      - name: Terraform Init For VPC Resources
+      - name: Terraform Init For Inspection VPC Resources
         uses: hashicorp/terraform-github-actions@master
         with:
           tf_actions_version: ${{ env.tf_version }}
@@ -79,7 +79,7 @@ jobs:
           tf_actions_working_dir: ${{ env.tf_working_dir_app }}
           tf_actions_comment: false
 
-      - name: Terraform Plan VPC Resources
+      - name: Terraform Plan Inspection VPC Resources
         if: github.event.inputs.action == 'Create'
         id: app-plan
         uses: hashicorp/terraform-github-actions@master
@@ -90,7 +90,7 @@ jobs:
           tf_actions_subcommand: 'plan'
           args: '-var="environment=${{ env.environment }}" -var-file="${{ env.environment }}.tfvars"'
 
-      - name: Terraform Apply For VPC Resources
+      - name: Terraform Apply For Inspection VPC Resources
         if: steps.app-plan.outputs.tf_actions_plan_has_changes == 'true' && github.event.inputs.action == 'Create'
         uses: hashicorp/terraform-github-actions@master
         with:
@@ -101,7 +101,7 @@ jobs:
           args: '-auto-approve -var="environment=${{ env.environment }}" -var-file="${{ env.environment }}.tfvars"'
 
 
-      - name: Terraform Destroy For VPC Resources
+      - name: Terraform Destroy For Inspection VPC Resources
         if: github.event.inputs.action == 'Destroy'
         uses: hashicorp/terraform-github-actions@master
         with:
